@@ -1,0 +1,1227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Anthony Mbagwu Portfolio</title>
+<meta name="description" content="Anthony Ndidi Mbagwu: software engineer and founder of Anchor, an open-source Windows optimization app.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: left-aligned editorial column; asymmetric hero (thesis left, live terminal right) that stacks on phones; sections labelled like file paths. */
+:root {
+  --bg: #eceff2;
+  --surface: #ffffff;
+  --ink: #0f1822;
+  --muted: #586472;
+  --line: #cfd6de;
+  --accent: #1f4fd8;
+  --accent-soft: #dfe6fb;
+  --ok: #17824f;
+  --ok-soft: #dcf1e6;
+  --term-bg: #101820;
+  --term-ink: #d9e2ec;
+  --term-dim: #7d8b9a;
+  --term-accent: #8fb0ff;
+  --term-ok: #6fd3a0;
+  --font-display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  --step-0: 1rem;
+  --step-1: 1.25rem;
+  --step-2: clamp(1.6rem, 1.2rem + 1.6vw, 2.2rem);
+  --step-3: clamp(2.6rem, 1.6rem + 4.6vw, 5rem);
+  --radius: 10px;
+  --lang-py: #3b76b0;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c1117; --surface: #131a22; --ink: #e5eaf0; --muted: #94a1af; --line: #253140;
+    --accent: #85a3ff; --accent-soft: #1b2747; --ok: #52c98f; --ok-soft: #12301f;
+    --term-bg: #070b10; --term-ink: #d9e2ec; --term-dim: #7d8b9a; --term-accent: #8fb0ff; --term-ok: #6fd3a0;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0c1117; --surface: #131a22; --ink: #e5eaf0; --muted: #94a1af; --line: #253140;
+  --accent: #85a3ff; --accent-soft: #1b2747; --ok: #52c98f; --ok-soft: #12301f;
+  --term-bg: #070b10; --term-ink: #d9e2ec; --term-dim: #7d8b9a; --term-accent: #8fb0ff; --term-ok: #6fd3a0;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; animation: none !important; } }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: var(--step-0); line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+a { color: var(--accent); text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.wrap {
+  max-width: 1120px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.mono { font-family: var(--font-mono); }
+.label { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.04em; color: var(--muted); }
+
+/* Nav */
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.nav .wrap { display: flex; align-items: center; gap: 16px; padding-block: 12px; }
+.mark { font-family: var(--font-display); font-weight: 800; font-stretch: 125%; font-size: 1.05rem; text-decoration: none; color: var(--ink); letter-spacing: -0.01em; white-space: nowrap; }
+.mark span { color: var(--accent); }
+.nav ul { display: flex; gap: 18px; list-style: none; margin: 0 0 0 auto; padding: 0; }
+.nav ul a { color: var(--muted); text-decoration: none; font-size: 0.92rem; font-weight: 500; }
+.nav ul a:hover { color: var(--ink); }
+.icon-btn { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; height: 34px; padding: 0 12px; font: 500 0.82rem var(--font-mono); cursor: pointer; white-space: nowrap; }
+.icon-btn:hover { border-color: var(--accent); }
+@media (max-width: 760px) { .nav ul { display: none; } .nav .icon-btn { margin-left: auto; } }
+
+/* Hero */
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 64px); align-items: start; padding-block: clamp(36px, 7vw, 88px) clamp(40px, 6vw, 72px); }
+@media (max-width: 900px) { .hero .wrap { grid-template-columns: minmax(0, 1fr); } }
+.hero h1 {
+  font-family: var(--font-display); font-weight: 800; font-stretch: 125%;
+  font-size: var(--step-3); line-height: 0.95; letter-spacing: -0.03em; margin: 14px 0 22px; text-wrap: balance;
+}
+.hero h1 .thin { font-weight: 500; color: var(--muted); }
+.lead { font-size: var(--step-1); line-height: 1.5; max-width: 34ch; margin: 0 0 28px; color: var(--ink); }
+.lead em { font-style: normal; color: var(--accent); font-weight: 600; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border-radius: 8px; font: 600 0.95rem var(--font-body); text-decoration: none; cursor: pointer; border: 1px solid var(--ink); }
+.btn-primary { background: var(--ink); color: var(--bg); }
+.btn-primary:hover { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.btn-ghost { background: transparent; color: var(--ink); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin-top: 36px; border-top: 1px solid var(--line); max-width: 520px; }
+.facts div { padding: 14px 14px 0 0; }
+.facts b { display: block; font-family: var(--font-display); font-stretch: 112%; font-size: 1.7rem; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.facts span { font-size: 0.85rem; color: var(--muted); }
+
+/* Terminal */
+.term { background: var(--term-bg); color: var(--term-ink); border-radius: var(--radius); font-family: var(--font-mono); font-size: 0.86rem; line-height: 1.6; box-shadow: 0 24px 48px -28px rgba(10, 20, 40, 0.55); min-width: 0; }
+.term-bar { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.08); color: var(--term-dim); font-size: 0.78rem; }
+.term-bar i { width: 10px; height: 10px; border-radius: 50%; background: #3a4654; display: inline-block; }
+.term-bar .t { margin-left: 6px; }
+.term-out { height: 300px; overflow-y: auto; padding: 14px 16px 4px; overflow-wrap: anywhere; }
+.term-out p { margin: 0; white-space: pre-wrap; }
+.term .dim { color: var(--term-dim); }
+.term .acc { color: var(--term-accent); }
+.term .okc { color: var(--term-ok); }
+.term-in { display: flex; align-items: center; gap: 8px; padding: 6px 16px 14px; }
+.term-in label { color: var(--term-ok); white-space: nowrap; }
+.term-in input { flex: 1; min-width: 0; background: transparent; border: 0; color: var(--term-ink); font: inherit; caret-color: var(--term-ok); outline: none; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 16px 16px; }
+.chip-cmd { background: rgba(255,255,255,0.06); color: var(--term-ink); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 4px 9px; font: 0.76rem var(--font-mono); cursor: pointer; }
+.chip-cmd:hover { border-color: var(--term-accent); color: var(--term-accent); }
+.term-note { font-family: var(--font-mono); font-size: 0.74rem; color: var(--muted); margin: 10px 2px 0; }
+
+/* Sections */
+section.block { border-top: 1px solid var(--line); }
+section.block > .wrap { padding-block: clamp(48px, 8vw, 96px); display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 32px; }
+@media (max-width: 760px) { section.block > .wrap { grid-template-columns: minmax(0, 1fr); gap: 12px; } }
+.path { font-family: var(--font-mono); font-size: 0.82rem; color: var(--accent); padding-top: 10px; }
+h2 { font-family: var(--font-display); font-stretch: 115%; font-weight: 750; font-size: var(--step-2); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 12px; text-wrap: balance; }
+.intro { color: var(--muted); max-width: 62ch; margin: 0 0 28px; }
+
+/* Demo */
+.demo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+@media (max-width: 900px) { .demo { grid-template-columns: minmax(0, 1fr); } }
+.tweaks { padding: 20px; border-right: 1px solid var(--line); display: grid; gap: 4px; align-content: start; }
+@media (max-width: 900px) { .tweaks { border-right: 0; border-bottom: 1px solid var(--line); } }
+.tweak { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.tweak:last-of-type { border-bottom: 0; }
+.tweak strong { display: block; font-weight: 600; font-size: 0.97rem; }
+.tweak small { display: block; color: var(--muted); font-size: 0.84rem; line-height: 1.45; }
+.tweak code { font-family: var(--font-mono); font-size: 0.78rem; background: var(--accent-soft); color: var(--ink); padding: 1px 5px; border-radius: 4px; }
+.switch { position: relative; width: 46px; height: 26px; flex: none; }
+.switch input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; z-index: 1; }
+.switch span { position: absolute; inset: 0; background: var(--line); border-radius: 999px; transition: background 0.2s; }
+.switch span::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: var(--surface); transition: transform 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.25); }
+.switch input:checked + span { background: var(--ok); }
+.switch input:checked + span::after { transform: translateX(20px); }
+.switch input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+.demo-actions { display: flex; flex-wrap: wrap; gap: 10px; padding-top: 14px; }
+.demo-actions .btn { height: 38px; font-size: 0.88rem; }
+.readout { padding: 20px; display: grid; gap: 16px; align-content: start; }
+.meters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 20px; }
+.meter .k { font-size: 0.82rem; color: var(--muted); }
+.meter .v { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.meter .v b { font-family: var(--font-display); font-stretch: 110%; font-weight: 700; font-size: 1.9rem; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.meter .v em { font-style: normal; font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); }
+.delta { font-family: var(--font-mono); font-size: 0.74rem; padding: 1px 6px; border-radius: 4px; background: var(--ok-soft); color: var(--ok); }
+.delta[hidden] { display: none !important; }
+.bar { height: 6px; background: var(--line); border-radius: 999px; overflow: hidden; margin-top: 6px; }
+.bar i { display: block; height: 100%; background: var(--accent); border-radius: 999px; transition: width 0.5s ease; }
+.log { background: var(--term-bg); color: var(--term-ink); border-radius: 8px; font: 0.78rem/1.6 var(--font-mono); padding: 12px 14px; height: 150px; overflow-y: auto; overflow-wrap: anywhere; }
+.log p { margin: 0; }
+.log .dim { color: var(--term-dim); }
+.sim-note { font-size: 0.8rem; color: var(--muted); margin: 0; }
+
+/* Work */
+.projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+@media (max-width: 760px) { .projects { grid-template-columns: minmax(0, 1fr); } }
+.project { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; display: flex; flex-direction: column; gap: 10px; transition: border-color 0.2s, box-shadow 0.2s, opacity 0.2s; min-width: 0; }
+.project.featured { grid-column: 1 / -1; }
+.anchor-brand { display: flex; align-items: center; gap: 12px; margin: 2px 0 4px; }
+.anchor-brand img { display: block; height: 56px; width: auto; max-width: 100%; }
+.project h3.anchor-h { line-height: 0; margin: 0; }
+.project h3 { font-family: var(--font-display); font-stretch: 112%; font-weight: 700; font-size: 1.35rem; margin: 0; letter-spacing: -0.01em; }
+.project p { margin: 0; color: var(--muted); max-width: 66ch; }
+.project ul { margin: 0; padding-left: 18px; color: var(--ink); }
+.project ul li { margin: 2px 0; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; padding-top: 2px; }
+.tag { font-family: var(--font-mono); font-size: 0.74rem; border: 1px solid var(--line); border-radius: 5px; padding: 2px 7px; color: var(--muted); }
+.links { display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.92rem; font-weight: 600; }
+/* Link previews: a mini browser window for live sites, a repo card for GitHub */
+.lp-slot { margin-top: auto; padding-top: 8px; display: grid; gap: 10px; }
+.project.featured .lp-slot { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); max-width: 760px; }
+.lp { position: relative; display: block; text-decoration: none; color: var(--ink); border: 1px solid var(--line); border-radius: 9px; background: var(--bg); overflow: hidden; min-width: 0; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; }
+.lp:hover, .lp:focus-visible { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 12px 24px -18px rgba(15, 24, 34, 0.6); }
+.lp-bar { position: relative; display: flex; align-items: center; gap: 5px; padding: 8px 10px; background: var(--surface); border-bottom: 1px solid var(--line); }
+.lp-bar > i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); flex: none; }
+.lp-bar::after { content: ""; position: absolute; left: 0; bottom: -1px; height: 2px; width: 0; background: var(--accent); transition: width 0.7s ease; }
+.lp:hover .lp-bar::after, .lp:focus-visible .lp-bar::after { width: 100%; }
+.lp-url { flex: 1; min-width: 0; margin-left: 6px; display: flex; align-items: center; gap: 6px; background: var(--bg); border-radius: 999px; padding: 3px 10px; font: 0.75rem var(--font-mono); color: var(--muted); }
+.lp-url svg { flex: none; width: 10px; height: 10px; }
+.lp-url span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lp-body { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; padding: 12px; }
+.lp-status { display: inline-flex; align-items: center; gap: 8px; font: 600 0.75rem var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--ok); }
+.pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); animation: pulse 2.2s ease-out infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--ok) 55%, transparent); } 70%, 100% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--ok) 0%, transparent); } }
+.lp-cta { font: 600 0.88rem var(--font-body); color: var(--accent); white-space: nowrap; }
+.lp-cta b { display: inline-block; transition: transform 0.2s; font-weight: 600; }
+.lp:hover .lp-cta b { transform: translate(2px, -2px); }
+.lp-repo { background: var(--surface); }
+.lp-head { display: flex; align-items: flex-start; gap: 10px; padding: 12px 12px 4px; font: 0.84rem/1.45 var(--font-mono); min-width: 0; }
+.lp-head svg { flex: none; width: 16px; height: 16px; margin-top: 2px; color: var(--muted); }
+.lp-head span { min-width: 0; overflow-wrap: anywhere; }
+.lp-head .owner { color: var(--muted); }
+.lp-head b { color: var(--accent); font-weight: 600; }
+.lp-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 14px; padding: 6px 12px 12px; font-size: 0.8rem; color: var(--muted); }
+.lp-meta .facts-row { display: inline-flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.lang { display: inline-flex; align-items: center; gap: 6px; }
+.lang i { width: 10px; height: 10px; border-radius: 50%; background: var(--lang-py); }
+.vis { border: 1px solid var(--line); border-radius: 999px; padding: 0 8px; font-size: 0.72rem; }
+.hit { border-color: var(--accent) !important; box-shadow: 0 0 0 3px var(--accent-soft); }
+.dimmed { opacity: 0.45; }
+
+/* Experience */
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.job { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 20px; padding: 22px 0; border-bottom: 1px solid var(--line); transition: opacity 0.2s; border-radius: 6px; }
+.job:first-child { padding-top: 0; }
+@media (max-width: 760px) { .job { grid-template-columns: minmax(0, 1fr); gap: 6px; } }
+.job .when { font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); padding-top: 4px; font-variant-numeric: tabular-nums; }
+.job h3 { margin: 0; font-size: 1.08rem; font-weight: 600; }
+.job h3 span { color: var(--muted); font-weight: 500; }
+.job ul { margin: 8px 0 0; padding-left: 18px; }
+.job li { margin: 3px 0; }
+.job.hit { box-shadow: inset 3px 0 0 var(--accent); padding-left: 14px; }
+
+/* Skills */
+.skill-groups { display: grid; gap: 22px; }
+.skill-group h3 { font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+.skill-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.skill { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 7px 14px; font: 500 0.9rem var(--font-body); cursor: pointer; }
+.skill:hover { border-color: var(--accent); }
+.skill[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.skill-result { margin-top: 24px; padding: 16px 18px; border: 1px dashed var(--line); border-radius: var(--radius); color: var(--muted); font-size: 0.95rem; }
+.skill-result b { color: var(--ink); }
+.skill-result.filled { border-style: solid; background: var(--surface); color: var(--ink); padding: 20px 22px 14px; }
+.sp-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; margin-bottom: 8px; }
+.sp-head h3 { margin: 0; font-family: var(--font-display); font-stretch: 112%; font-weight: 700; font-size: 1.45rem; letter-spacing: -0.01em; }
+.sp-kind { font: 0.74rem var(--font-mono); color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 1px 9px; }
+.sp-what { margin: 0 0 14px; font-size: 1.03rem; line-height: 1.55; max-width: 62ch; }
+.sp-row { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 6px 18px; padding: 14px 0; border-top: 1px solid var(--line); }
+@media (max-width: 600px) { .sp-row { grid-template-columns: minmax(0, 1fr); } }
+.sp-row .label { padding-top: 3px; }
+.sp-row p { margin: 0; color: var(--muted); max-width: 62ch; }
+.sp-used { display: flex; flex-wrap: wrap; gap: 8px; }
+.sp-jump { border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 6px; padding: 5px 10px; font: 500 0.88rem var(--font-body); cursor: pointer; }
+.sp-jump:hover { border-color: var(--accent); color: var(--accent); }
+.sp-foot { display: flex; justify-content: flex-end; border-top: 1px solid var(--line); padding-top: 10px; }
+.sp-clear { background: none; border: 0; color: var(--accent); font: 600 0.88rem var(--font-body); cursor: pointer; padding: 4px 0; }
+
+/* Contact */
+.contact h2 { font-size: var(--step-3); font-stretch: 125%; line-height: 0.98; margin-bottom: 24px; }
+.email-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 18px; }
+.email { font-family: var(--font-mono); font-size: clamp(1rem, 0.85rem + 1vw, 1.4rem); user-select: all; overflow-wrap: anywhere; }
+.status { font-family: var(--font-mono); font-size: 0.8rem; color: var(--ok); min-height: 1.2em; }
+.reach { list-style: none; margin: 24px 0 0; padding: 0; border-top: 1px solid var(--line); max-width: 720px; }
+.reach a { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 4px 18px; padding: 16px 4px; border-bottom: 1px solid var(--line); text-decoration: none; color: var(--ink); }
+.reach .name { font-family: var(--font-display); font-stretch: 112%; font-weight: 650; font-size: clamp(1.15rem, 1rem + 0.8vw, 1.5rem); line-height: 1.2; transition: color 0.2s; }
+.reach .handle { font: 0.8rem var(--font-mono); color: var(--muted); text-align: right; overflow-wrap: anywhere; }
+.reach .arr { font-size: 1.25rem; line-height: 1; color: var(--muted); transition: transform 0.2s, color 0.2s; }
+.reach a:hover .name, .reach a:focus-visible .name { color: var(--accent); }
+.reach a:hover .arr, .reach a:focus-visible .arr { color: var(--accent); transform: translate(3px, -3px); }
+@media (max-width: 520px) {
+  .reach a { grid-template-columns: minmax(0, 1fr) auto; }
+  .reach .arr { grid-column: 2; grid-row: 1 / span 2; }
+  .reach .handle { grid-column: 1; grid-row: 2; text-align: left; }
+}
+.cv-dialog { width: min(880px, calc(100vw - 24px)); max-width: none; max-height: calc(100% - 24px); padding: 0; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--ink); overflow: hidden; }
+.cv-dialog[open] { display: flex; flex-direction: column; }
+.cv-dialog::backdrop { background: rgba(8, 12, 18, 0.62); backdrop-filter: blur(3px); }
+.cv-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+.cv-head h3 { margin: 0 auto 0 0; font: 600 1rem var(--font-body); }
+.cv-head .btn { height: 36px; padding: 0 14px; font-size: 0.85rem; }
+.cv-body { flex: 1; min-height: 0; overflow: auto; padding: 14px; background: var(--bg); display: grid; gap: 14px; }
+.cv-body canvas { display: block; width: 100%; height: auto; background: #ffffff; border-radius: 4px; box-shadow: 0 10px 30px -18px rgba(10, 20, 40, 0.55); }
+.cv-status { margin: 0; padding: 48px 16px; text-align: center; font: 0.86rem var(--font-mono); color: var(--muted); }
+.reach-note { font-size: 0.85rem; color: var(--muted); margin: 12px 0 0; }
+/* Seasonal decorations (switch on automatically by date) */
+:root { --snow: #9fb2c8; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --snow: #e8eef6; } }
+:root[data-theme="dark"] { --snow: #e8eef6; }
+canvas.season-canvas { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 8; }
+.season-orn { position: fixed; pointer-events: none; z-index: 8; display: none; }
+.season-orn.on { display: block; }
+.season-ribbon { position: absolute; left: 0; right: 0; top: 0; height: 5px; background: linear-gradient(90deg, #118a3e 0 33.3%, #ffffff 33.3% 66.6%, #118a3e 66.6%); box-shadow: 0 1px 0 rgba(0, 0, 0, 0.12); pointer-events: none; display: none; }
+.season-ribbon.on { display: block; }
+.season-cobweb { left: env(safe-area-inset-left, 0px); top: calc(var(--nav-h, 58px) + env(safe-area-inset-top, 0px)); width: clamp(80px, 12vw, 130px); height: auto; color: var(--muted); opacity: 0.5; }
+.season-moon { right: calc(14px + env(safe-area-inset-right, 0px)); top: calc(var(--nav-h, 58px) + 10px + env(safe-area-inset-top, 0px)); width: clamp(70px, 10vw, 110px); height: auto; opacity: 0.95; }
+.season-eggs { left: calc(10px + env(safe-area-inset-left, 0px)); bottom: calc(4px + env(safe-area-inset-bottom, 0px)); width: clamp(130px, 18vw, 200px); height: auto; }
+.greet { display: none; align-items: center; gap: 4px; border-radius: 999px; padding: 3px 4px 3px 12px; font: 600 0.8rem var(--font-body); background: var(--season-soft, var(--accent-soft)); color: var(--ink); border: 1px solid var(--season, var(--accent)); white-space: nowrap; max-width: 100%; min-width: 0; }
+.greet.on { display: inline-flex; }
+.greet span { overflow: hidden; text-overflow: ellipsis; }
+.greet button { flex: none; border: 0; background: transparent; color: inherit; cursor: pointer; font: 600 0.95rem var(--font-body); width: 24px; height: 24px; border-radius: 50%; line-height: 1; }
+.greet button:hover { background: color-mix(in srgb, currentColor 14%, transparent); }
+@media (max-width: 760px) { .nav .greet.on { margin-left: auto; } .nav .greet.on ~ .icon-btn { margin-left: 0; } }
+.season-note { position: fixed; z-index: 11; right: calc(16px + env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); width: min(340px, calc(100vw - 32px)); background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px 14px; box-shadow: 0 18px 40px -22px rgba(10, 20, 40, 0.55); display: none; }
+.season-note.on { display: block; animation: note-in 0.5s ease both; }
+@keyframes note-in { from { transform: translateY(12px); opacity: 0; } to { transform: none; opacity: 1; } }
+.season-note .label { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.season-note .label i { width: 8px; height: 8px; border-radius: 50%; background: var(--season, var(--accent)); }
+.season-note p { margin: 0; font-size: 0.95rem; line-height: 1.5; padding-right: 18px; }
+.season-note .sig { display: block; margin-top: 6px; font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted); }
+.season-note button { position: absolute; top: 8px; right: 8px; border: 0; background: transparent; color: var(--muted); width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font: 600 1rem var(--font-body); }
+.season-note button:hover { color: var(--ink); background: var(--bg); }
+footer .wrap { padding-block: 28px 40px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; color: var(--muted); font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="season-ribbon" id="seasonRibbon"></div>
+  <div class="wrap">
+    <a class="mark" href="#top">ANM<span>.</span></a>
+    <ul>
+      <li><a href="#demo">Demo</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <span class="greet" id="seasonGreet"><span id="seasonGreetText"></span><button type="button" id="seasonHide" aria-label="Hide holiday decorations">×</button></span>
+    <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch colour theme">theme: auto</button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <div class="label">Software engineer · Abuja, Nigeria</div>
+        <h1>Anthony <span class="thin">Ndidi</span> Mbagwu</h1>
+        <p class="lead">I build software that makes computers <em>lighter, faster and safer.</em> Founder of Anchor, an open-source Windows optimizer, with a background in IT support and network security.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#demo">Try the Anchor demo</a>
+          <a class="btn btn-ghost" href="#work">See my work</a>
+          <a class="btn btn-ghost" href="Anthony_Mbagwu_CV.pdf" data-action="resume" target="_blank" rel="noopener">View resume</a>
+        </div>
+        <div class="facts">
+          <div><b>50+</b><span>Anchor downloads</span></div>
+          <div><b>2 yrs</b><span>IT support</span></div>
+          <div><b>2</b><span>tech internships</span></div>
+        </div>
+      </div>
+
+      <div style="min-width:0">
+        <div class="term" id="term">
+          <div class="term-bar"><i></i><i></i><i></i><span class="t">anthony@abuja: ~</span></div>
+          <div class="term-out" id="termOut" aria-live="polite">
+            <p class="dim">Anchor shell 1.0 · type <span class="acc">help</span> or tap a command</p>
+            <p><span class="okc">anthony@abuja:~$</span> whoami</p>
+            <p>Anthony Ndidi Mbagwu
+Software developer, founder of Anchor.
+IT support + network security background.
+Studying B.Sc. Software Engineering (Miva Open University).</p>
+            <p>&nbsp;</p>
+          </div>
+          <form class="term-in" id="termForm" autocomplete="off">
+            <label for="termInput">~$</label>
+            <input id="termInput" type="text" spellcheck="false" autocapitalize="off" aria-label="Type a terminal command" placeholder="type a command">
+          </form>
+          <div class="chips" id="termChips">
+            <button class="chip-cmd" type="button" data-cmd="help">help</button>
+            <button class="chip-cmd" type="button" data-cmd="projects">projects</button>
+            <button class="chip-cmd" type="button" data-cmd="skills">skills</button>
+            <button class="chip-cmd" type="button" data-cmd="experience">experience</button>
+            <button class="chip-cmd" type="button" data-cmd="contact">contact</button>
+            <button class="chip-cmd" type="button" data-cmd="socials">socials</button>
+            <button class="chip-cmd" type="button" data-cmd="resume">resume</button>
+          </div>
+        </div>
+        <p class="term-note">Use ↑ / ↓ for command history.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="demo">
+    <div class="wrap">
+      <div class="path">/demo/anchor</div>
+      <div style="min-width:0">
+        <h2>Anchor, in miniature</h2>
+        <p class="intro">Anchor removes the dead weight that slows Windows down, and every change can be undone. Flip the tweaks below to see the kind of effect it has on a typical cluttered laptop.</p>
+        <div class="demo">
+          <div class="tweaks" id="tweaks">
+            <div class="tweak">
+              <div><strong>Disable startup bloat</strong><small>Stops 11 apps from launching at boot, such as updaters and chat clients.</small></div>
+              <label class="switch"><input type="checkbox" id="tw-startup" data-tweak="startup" aria-label="Disable startup bloat"><span></span></label>
+            </div>
+            <div class="tweak">
+              <div><strong>Turn off telemetry services</strong><small>Stops <code>DiagTrack</code> and <code>dmwappushservice</code> from running in the background.</small></div>
+              <label class="switch"><input type="checkbox" id="tw-telemetry" data-tweak="telemetry" aria-label="Turn off telemetry services"><span></span></label>
+            </div>
+            <div class="tweak">
+              <div><strong>Remove preinstalled trial apps</strong><small>Uninstalls trialware and promoted games that ship with the laptop.</small></div>
+              <label class="switch"><input type="checkbox" id="tw-bloat" data-tweak="bloat" aria-label="Remove preinstalled trial apps"><span></span></label>
+            </div>
+            <div class="tweak">
+              <div><strong>Clear temporary files</strong><small>Empties <code>%TEMP%</code> and the leftover Windows Update download cache.</small></div>
+              <label class="switch"><input type="checkbox" id="tw-temp" data-tweak="temp" aria-label="Clear temporary files"><span></span></label>
+            </div>
+            <div class="demo-actions">
+              <button class="btn btn-primary" type="button" id="applyAll">Optimize all</button>
+              <button class="btn btn-ghost" type="button" id="restoreAll">Restore defaults</button>
+            </div>
+          </div>
+          <div class="readout">
+            <div class="meters">
+              <div class="meter"><div class="k">Boot time</div><div class="v"><b id="m-boot">48</b><em>s</em><span class="delta" id="d-boot" hidden></span></div><div class="bar"><i id="b-boot" style="width:80%"></i></div></div>
+              <div class="meter"><div class="k">Memory in use</div><div class="v"><b id="m-ram">6.1</b><em>of 8 GB</em><span class="delta" id="d-ram" hidden></span></div><div class="bar"><i id="b-ram" style="width:76%"></i></div></div>
+              <div class="meter"><div class="k">Background processes</div><div class="v"><b id="m-proc">142</b><span class="delta" id="d-proc" hidden></span></div><div class="bar"><i id="b-proc" style="width:71%"></i></div></div>
+              <div class="meter"><div class="k">Disk space freed</div><div class="v"><b id="m-disk">0.0</b><em>GB</em></div><div class="bar"><i id="b-disk" style="width:0%"></i></div></div>
+            </div>
+            <div class="log" id="log" aria-live="polite"><p class="dim">Ready. Pick a tweak to apply it.</p></div>
+            <p class="sim-note">Simulation with example figures. Real results depend on the machine.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="work">
+    <div class="wrap">
+      <div class="path">/project</div>
+      <div style="min-width:0">
+        <h2>Selected work</h2>
+        <p class="intro">Products, tools and apps from my own projects and internships. Each one links to the live site or the source code.</p>
+        <div class="projects">
+          <article class="project featured" data-skills="TypeScript JavaScript HTML CSS Windows System optimization GitHub Full-stack development Frontend development">
+            <div class="label">Founder &amp; lead developer · Aug 2025 – present</div>
+            <div class="anchor-brand">
+              <h3 class="anchor-h"><img class="anchor-wordmark" src="data:image/png;base64,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" alt="Anchor" width="108" height="56"></h3>
+            </div>
+            <p>A free, open-source Windows optimization app built for people who are tired of slow PCs and closed, upsell-heavy cleaners. Every tweak is transparent and reversible.</p>
+            <ul>
+              <li>Built the app end to end with TypeScript, JavaScript, HTML and CSS</li>
+              <li>Grew it to 50+ downloads with an active public repository on GitHub</li>
+              <li>Designed the full brand identity: logo, icon set and wordmark</li>
+            </ul>
+            <div class="tags"><span class="tag">TypeScript</span><span class="tag">JavaScript</span><span class="tag">HTML/CSS</span><span class="tag">Windows</span><span class="tag">Open source</span></div>
+            <div class="lp-slot" data-preview="anchor"></div>
+          </article>
+          <article class="project" data-skills="Python Network security Threat detection GitHub">
+            <div class="label">CodeAlpha internship · 2026</div>
+            <h3>Network Packet Analyzer</h3>
+            <p>A Python tool that captures, analyzes and visualizes network traffic. It gives a clear view of network activity to help spot issues, catch security threats and improve network performance.</p>
+            <div class="tags"><span class="tag">Python</span><span class="tag">Networking</span><span class="tag">Security</span><span class="tag">Visualization</span></div>
+            <div class="lp-slot" data-preview="analyzer"></div>
+          </article>
+          <article class="project" data-skills="Java Database management GitHub">
+            <div class="label">Personal project</div>
+            <h3>Student Course Management</h3>
+            <p>A lightweight Java desktop app for storing and organizing student course records in one place.</p>
+            <div class="tags"><span class="tag">Java</span><span class="tag">GUI app</span><span class="tag">Data storage</span><span class="tag">Desktop</span></div>
+            <div class="lp-slot" data-preview="courses"></div>
+          </article>
+          <article class="project" data-skills="Frontend development">
+            <div class="label">Personal project</div>
+            <h3>MoodTunes</h3>
+            <p>A responsive web app that builds a personalized birthday playlist based on your mood.</p>
+            <div class="tags"><span class="tag">Web app</span><span class="tag">Responsive UI</span><span class="tag">Vercel</span></div>
+            <div class="lp-slot" data-preview="moodtunes"></div>
+          </article>
+          <article class="project" data-skills="SQL Database management Software testing">
+            <div class="label">Digital Bridge Institute internship · 2026</div>
+            <h3>SQL database optimization</h3>
+            <p>Developed and optimized SQL databases for internal projects, and tested applications and websites to catch defects before release.</p>
+            <div class="tags"><span class="tag">SQL</span><span class="tag">Databases</span><span class="tag">QA testing</span></div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="experience">
+    <div class="wrap">
+      <div class="path">/experience</div>
+      <div style="min-width:0">
+        <h2>Experience</h2>
+        <ol class="timeline" reversed>
+          <li class="job" data-skills="TypeScript JavaScript HTML CSS Windows System optimization GitHub Full-stack development">
+            <div class="when">Aug 2025 – Present</div>
+            <div><h3>Founder &amp; Lead Developer <span>· Anchor · Remote</span></h3>
+              <ul><li>Founded and built an open-source Windows optimization app focused on transparent, reversible system tweaks</li><li>Grew it to 50+ downloads with an active public repository on GitHub</li></ul></div>
+          </li>
+          <li class="job" data-skills="SQL Database management Software testing">
+            <div class="when">May 2026 – Oct 2026</div>
+            <div><h3>Software Engineer Intern <span>· Digital Bridge Institute · Abuja</span></h3>
+              <ul><li>Developed and optimized SQL databases for internal projects</li><li>Tested software applications and websites to find and fix defects before release</li><li>Supported software reliability and database management across the engineering team</li></ul></div>
+          </li>
+          <li class="job" data-skills="Python Network security Threat detection">
+            <div class="when">May 2026 – Oct 2026</div>
+            <div><h3>Cyber Security Analyst Intern <span>· CodeAlpha · Remote</span></h3>
+              <ul><li>Performed threat detection and analysis on assigned systems</li><li>Built a Python network packet analyzer that captures, analyzes and visualizes traffic</li><li>Applied secure systems architecture principles in hands-on projects</li></ul></div>
+          </li>
+          <li class="job" data-skills="IT support Troubleshooting Hardware support Network security Firewall management VPN access control System optimization Windows">
+            <div class="when">2023 – 2025</div>
+            <div><h3>IT Support Engineer <span>· C2NAO Global Concept · Abuja</span></h3>
+              <ul><li>Managed network security, including firewall rules, intrusion detection and VPN access controls</li><li>Optimized systems and workflows, cutting operational costs by 20% within one year</li><li>Trained staff on systems and processes, improving team productivity by 35% in six months</li><li>Maintained critical infrastructure, audited digital assets and configured new workstations</li></ul></div>
+          </li>
+          <li class="job" data-skills="Cloud Cisco Packet Tracer">
+            <div class="when">Sept 2024 – Sept 2027</div>
+            <div><h3>B.Sc. Software Engineering <span>· Miva Open University</span></h3>
+              <ul><li>Expected graduation September 2027</li><li>Google Cloud Skill Badge: Cloud Architecture (2025) · Cisco Networking Academy coursework (2026)</li></ul></div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="skills">
+    <div class="wrap">
+      <div class="path">/skills</div>
+      <div style="min-width:0">
+        <h2>Skills</h2>
+        <p class="intro">Tap any skill to see what it is, a short history, and where I have used it. The matching work and roles light up on the page too.</p>
+        <div class="skill-groups" id="skillGroups"></div>
+        <div class="skill-result" id="skillResult" aria-live="polite">No skill selected yet. Try <b>TypeScript</b> or <b>Network security</b>.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block contact" id="contact">
+    <div class="wrap">
+      <div class="path">/contact</div>
+      <div style="min-width:0">
+        <h2>Let's build something lighter.</h2>
+        <p class="intro">Open to software engineering, cybersecurity and technical support roles, and to contributors who want to help with Anchor.</p>
+        <div class="email-row">
+          <span class="email" id="emailText">ndidithegreat@gmail.com</span>
+          <button class="btn btn-primary" type="button" id="copyEmail">Copy email</button>
+        </div>
+        <div class="status" id="copyStatus" role="status"></div>
+        <ul class="reach" id="reach"></ul>
+        <p class="reach-note">WhatsApp and Telegram open with a short message ready to send.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<canvas class="season-canvas" id="seasonCanvas" aria-hidden="true"></canvas>
+<svg class="season-orn season-cobweb" id="seasonCobweb" viewBox="0 0 120 120" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1"><path d="M0 0L120 70M0 0L95 95M0 0L70 120M0 0L120 25M0 0L25 120"/><path d="M0 28Q14 22 26 26Q30 14 28 0"/><path d="M0 55Q28 44 52 50Q56 26 54 0"/><path d="M0 84Q42 66 78 74Q82 40 80 0"/></g><line x1="62" y1="57" x2="62" y2="78" stroke="currentColor"/><circle cx="62" cy="81" r="4" fill="currentColor"/></svg>
+<svg class="season-orn season-moon" id="seasonMoon" viewBox="0 0 120 120" aria-hidden="true"><path d="M70 18a38 38 0 1 0 32 58a30 30 0 1 1 -32 -58z" fill="#e8c35a"/><g fill="#e8c35a"><path d="M30 22l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/><path d="M98 30l1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5z"/><path d="M20 70l1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5z"/></g></svg>
+<svg class="season-orn season-eggs" id="seasonEggs" viewBox="0 0 220 64" aria-hidden="true"><g transform="translate(26 34)"><ellipse rx="18" ry="24" fill="#f6c6d8"/><path d="M-17 -4h34M-17 6h34" stroke="#ffffff" stroke-width="4"/></g><g transform="translate(72 38)"><ellipse rx="16" ry="21" fill="#bfe3d0"/><circle cx="-6" cy="-6" r="3" fill="#fff"/><circle cx="6" cy="2" r="3" fill="#fff"/><circle cx="-4" cy="10" r="3" fill="#fff"/></g><g transform="translate(116 34)"><ellipse rx="18" ry="24" fill="#c9d6fb"/><path d="M-16 0l8-6 8 6 8-6 8 6" fill="none" stroke="#ffffff" stroke-width="3"/></g><g transform="translate(162 38)"><ellipse rx="16" ry="21" fill="#fbe3a6"/><path d="M-15 -2h30" stroke="#f6c6d8" stroke-width="5"/></g></svg>
+<aside class="season-note" id="seasonNote" aria-live="polite">
+  <div class="label"><i></i>A note from Anthony</div>
+  <p id="seasonNoteText"></p>
+  <span class="sig">— Anthony</span>
+  <button type="button" id="seasonNoteClose" aria-label="Close message">×</button>
+</aside>
+
+<dialog class="cv-dialog" id="cvDialog" aria-labelledby="cvTitle">
+  <div class="cv-head">
+    <h3 id="cvTitle">Resume · Anthony Ndidi Mbagwu</h3>
+    <a class="btn btn-ghost" id="cvOpen" href="Anthony_Mbagwu_CV.pdf" target="_blank" rel="noopener">Open PDF ↗</a>
+    <button class="btn btn-primary" type="button" id="cvClose">Close</button>
+  </div>
+  <div class="cv-body" id="cvBody"><p class="cv-status">Loading resume…</p></div>
+</dialog>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year">2026</span> Anthony Ndidi Mbagwu</span>
+    <span class="mono">Hand-built with HTML, CSS and JavaScript</span>
+  </div>
+</footer>
+
+<script>
+/* ===== Edit your links here ===== */
+const CONFIG = {
+  email: "ndidithegreat@gmail.com",
+  linkedin: "https://linkedin.com/in/anthony-mbagwu",
+  github: "https://github.com/Eiza-1",
+  x: "https://x.com/NdidiInsight",
+  phone: "2348165378307",          // international format, no + or spaces
+  phoneDisplay: "+234 816 537 8307",
+  quickMessage: "Hi Anthony, I came across your portfolio and was really impressed by your work. I have a paid project I'd love to discuss with you if you have the availability.",
+  bookMeet: "",      // e.g. a Cal.com or Calendly link; leave empty to hide "Book a Meet"
+  resume: "Anthony_Mbagwu_CV.pdf",  // keep this PDF next to index.html
+  // Project links. Leave one empty ("") to hide its preview card.
+  anchorSite: "https://eiza-1.github.io/anchor/",
+  anchorRepo: "",    // e.g. "https://github.com/Eiza-1/anchor"
+  analyzerRepo: "https://github.com/Eiza-1/CodeAlpha_ProjectName",
+  coursesRepo: "https://github.com/Eiza-1/Student-course-management-GUI-APP",
+  moodtunesSite: "https://moodtunes-omega.vercel.app/"
+};
+
+const SKILLS = {
+  "Development": ["TypeScript", "JavaScript", "Python", "Java", "SQL", "HTML", "CSS", "Full-stack development", "Frontend development", "Software testing", "Database management"],
+  "Systems & IT": ["System optimization", "Windows", "IT support", "Troubleshooting", "Hardware support"],
+  "Security": ["Network security", "Threat detection", "Firewall management", "VPN access control"],
+  "Tools": ["GitHub", "Cisco Packet Tracer", "Cloud"]
+};
+const SKILL_LABELS = { "Cloud": "Google Cloud" };
+
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+/* ---------- Links from CONFIG ---------- */
+function linkHTML(href, text) { return `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(text)} ↗</a>`; }
+const LOCK = '<svg viewBox="0 0 10 10" aria-hidden="true"><rect x="1.5" y="4.5" width="7" height="5" rx="1" fill="currentColor"/><path d="M3 4.5V3a2 2 0 0 1 4 0v1.5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+const REPO = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 1.5h9v11h-8a1 1 0 0 0-1 1z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M3.5 13.5a1 1 0 0 0 1 1h8" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M6.5 5l-1.5 1.5L6.5 8M9.5 5L11 6.5 9.5 8" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+function sitePreview(url, cta) {
+  let shown = url;
+  try { const u = new URL(url); shown = (u.host + u.pathname).replace(/\/$/, ""); } catch (e) {}
+  return `<a class="lp lp-site" href="${esc(url)}" target="_blank" rel="noopener" aria-label="${esc(cta)}: ${esc(shown)}">
+    <span class="lp-bar"><i></i><i></i><i></i><span class="lp-url">${LOCK}<span>${esc(shown)}</span></span></span>
+    <span class="lp-body"><span class="lp-status"><span class="pulse"></span>Live</span><span class="lp-cta">${esc(cta)} <b>↗</b></span></span>
+  </a>`;
+}
+function repoPreview(url, lang) {
+  let owner = "", repo = url;
+  try { const parts = new URL(url).pathname.split("/").filter(Boolean); owner = parts[0] || ""; repo = parts[1] || owner; } catch (e) {}
+  return `<a class="lp lp-repo" href="${esc(url)}" target="_blank" rel="noopener" aria-label="View source: ${esc(owner)}/${esc(repo)}">
+    <span class="lp-head">${REPO}<span><span class="owner">${esc(owner)} /</span> <b>${esc(repo)}</b></span></span>
+    <span class="lp-meta"><span class="facts-row">${lang ? `<span class="lang"><i></i>${esc(lang)}</span>` : ""}<span class="vis">Public</span></span><span class="lp-cta">View code <b>↗</b></span></span>
+  </a>`;
+}
+const PREVIEWS = {
+  anchor:    [["site", CONFIG.anchorSite, "Visit the Anchor site"], ["repo", CONFIG.anchorRepo]],
+  analyzer:  [["repo", CONFIG.analyzerRepo, "Python"]],
+  courses:   [["repo", CONFIG.coursesRepo]],
+  moodtunes: [["site", CONFIG.moodtunesSite, "Try it live"]]
+};
+(function renderLinks() {
+  $$("[data-preview]").forEach(slot => {
+    const items = (PREVIEWS[slot.dataset.preview] || []).filter(p => p[1]);
+    slot.innerHTML = items.map(([type, url, extra]) => type === "site" ? sitePreview(url, extra || "Visit site") : repoPreview(url, extra)).join("");
+    slot.hidden = items.length === 0;
+  });
+  const msg = encodeURIComponent(CONFIG.quickMessage);
+  const handleOf = (url, fallback) => { try { return new URL(url).pathname.split("/").filter(Boolean).pop() || fallback; } catch (e) { return fallback; } };
+  const REACH = [
+    ["Book a Meet", CONFIG.bookMeet, "Pick a time"],
+    ["LinkedIn", CONFIG.linkedin, handleOf(CONFIG.linkedin, "LinkedIn")],
+    ["Telegram", CONFIG.phone && `https://t.me/+${CONFIG.phone}?text=${msg}`, CONFIG.phoneDisplay],
+    ["WhatsApp", CONFIG.phone && `https://wa.me/${CONFIG.phone}?text=${msg}`, CONFIG.phoneDisplay],
+    ["X (Twitter)", CONFIG.x, "@" + handleOf(CONFIG.x, "")],
+    ["GitHub", CONFIG.github, handleOf(CONFIG.github, "GitHub")],
+    ["Resume", CONFIG.resume, "PDF · 1 page"]
+  ].filter(r => r[1]);
+  $("#reach").innerHTML = REACH.map(([name, url, handle]) =>
+    `<li><a href="${esc(url)}" target="_blank" rel="noopener"${name === "Resume" ? ' data-action="resume"' : ""}><span class="name">${esc(name)}</span><span class="handle">${esc(handle)}</span><span class="arr" aria-hidden="true">↗</span></a></li>`).join("");
+  $("#emailText").textContent = CONFIG.email;
+  $("#year").textContent = new Date().getFullYear();
+})();
+
+/* ---------- Resume viewer: renders the PDF inside the page ---------- */
+const PDFJS = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/";
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    const el = document.createElement("script");
+    el.src = src; el.onload = resolve; el.onerror = () => reject(new Error("Could not load " + src));
+    document.head.appendChild(el);
+  });
+}
+let pdfReady = null, cvRendered = false, cvLoading = false;
+function ensurePdfjs() {
+  if (!pdfReady) {
+    pdfReady = loadScript(PDFJS + "pdf.min.js")
+      .then(() => loadScript(PDFJS + "pdf.worker.min.js"))
+      .then(() => { window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS + "pdf.worker.min.js"; return window.pdfjsLib; });
+    pdfReady.catch(() => { pdfReady = null; });
+  }
+  return pdfReady;
+}
+async function renderCV() {
+  if (cvLoading) return;
+  cvLoading = true;
+  const body = $("#cvBody");
+  body.innerHTML = '<p class="cv-status">Loading resume…</p>';
+  try {
+    const lib = await ensurePdfjs();
+    const res = await fetch(CONFIG.resume);
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const pdf = await lib.getDocument({ data: new Uint8Array(await res.arrayBuffer()) }).promise;
+    const width = Math.max(300, body.clientWidth - 28);
+    const pages = [];
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const scale = (width / page.getViewport({ scale: 1 }).width) * Math.min(3, Math.max(2, window.devicePixelRatio || 1));
+      const vp = page.getViewport({ scale });
+      const c = document.createElement("canvas");
+      c.width = Math.floor(vp.width); c.height = Math.floor(vp.height);
+      c.setAttribute("role", "img"); c.setAttribute("aria-label", "Resume of Anthony Ndidi Mbagwu, page " + i);
+      await page.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise;
+      pages.push(c);
+    }
+    body.innerHTML = ""; pages.forEach(c => body.appendChild(c));
+    cvRendered = true;
+  } catch (e) {
+    body.innerHTML = `<p class="cv-status">The preview couldn't load here.<br><a href="${esc(CONFIG.resume)}" target="_blank" rel="noopener">Open the PDF ↗</a></p>`;
+  } finally { cvLoading = false; }
+}
+function openCV() {
+  const d = $("#cvDialog");
+  if (typeof d.showModal === "function") { if (!d.open) d.showModal(); } else d.setAttribute("open", "");
+  if (!cvRendered) renderCV();
+}
+function closeCV() { const d = $("#cvDialog"); if (typeof d.close === "function") d.close(); else d.removeAttribute("open"); }
+$("#cvClose").addEventListener("click", closeCV);
+$("#cvDialog").addEventListener("click", e => { if (e.target === e.currentTarget) closeCV(); });
+$("#cvOpen").href = CONFIG.resume;
+document.addEventListener("click", e => {
+  const a = e.target.closest('[data-action="resume"]');
+  if (!a) return;
+  e.preventDefault(); openCV();
+});
+
+/* ---------- Theme toggle ---------- */
+(function theme() {
+  const btn = $("#themeBtn");
+  const order = ["auto", "light", "dark"];
+  let mode = "auto";
+  try { mode = localStorage.getItem("anm-theme") || "auto"; } catch (e) {}
+  const apply = () => {
+    if (mode === "auto") document.documentElement.removeAttribute("data-theme");
+    else document.documentElement.setAttribute("data-theme", mode);
+    btn.textContent = "theme: " + mode;
+  };
+  apply();
+  btn.addEventListener("click", () => {
+    mode = order[(order.indexOf(mode) + 1) % order.length];
+    try { localStorage.setItem("anm-theme", mode); } catch (e) {}
+    apply();
+  });
+  window.__setTheme = m => { mode = m; try { localStorage.setItem("anm-theme", mode); } catch (e) {} apply(); };
+})();
+
+/* ---------- Copy email ---------- */
+function copyEmail(statusEl) {
+  const done = msg => { if (statusEl) statusEl.textContent = msg; };
+  const fallback = () => {
+    const r = document.createRange(); r.selectNodeContents($("#emailText"));
+    const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    done("Email selected. Press Ctrl+C or long-press to copy.");
+  };
+  try {
+    navigator.clipboard.writeText(CONFIG.email).then(() => done("Copied " + CONFIG.email), fallback);
+  } catch (e) { fallback(); }
+}
+$("#copyEmail").addEventListener("click", () => copyEmail($("#copyStatus")));
+
+/* ---------- Terminal ---------- */
+const out = $("#termOut"), input = $("#termInput");
+const history = []; let hIdx = 0;
+function print(html, cls) { const p = document.createElement("p"); if (cls) p.className = cls; p.innerHTML = html; out.appendChild(p); }
+function scrollEnd() { out.scrollTop = out.scrollHeight; }
+const goTo = id => { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); };
+
+const COMMANDS = {
+  help: () => [
+    'Available commands:',
+    '  <span class="acc">whoami</span>      who I am',
+    '  <span class="acc">projects</span>    what I have built',
+    '  <span class="acc">experience</span>  where I have worked',
+    '  <span class="acc">skills</span>      languages, tools, security',
+    '  <span class="acc">open</span> &lt;name&gt; get a link to a project',
+    '  <span class="acc">anchor</span>      jump to the live Anchor demo',
+    '  <span class="acc">resume</span>      view my CV',
+    '  <span class="acc">socials</span>     all my social links',
+    '  <span class="acc">linkedin</span> · <span class="acc">github</span> · <span class="acc">x</span> · <span class="acc">whatsapp</span> · <span class="acc">telegram</span>',
+    '  <span class="acc">contact</span>     how to reach me',
+    '  <span class="acc">holiday</span>     today\'s holiday, or the next one',
+    '  <span class="acc">theme</span>       switch light / dark',
+    '  <span class="acc">clear</span>       clear the screen'
+  ].join("\n"),
+  whoami: () => "Anthony Ndidi Mbagwu\nSoftware developer, founder of Anchor.\nIT support + network security background.\nStudying B.Sc. Software Engineering (Miva Open University).",
+  projects: () => [
+    '<span class="acc">anchor</span>           open-source Windows optimizer · 50+ downloads',
+    '<span class="acc">analyzer</span>         Python network packet analyzer · CodeAlpha',
+    '<span class="acc">courses</span>          student course management app · Java',
+    '<span class="acc">moodtunes</span>        mood-based birthday playlist web app',
+    '<span class="acc">sql</span>              database optimization · Digital Bridge Institute',
+    '<span class="dim">tip: run "open moodtunes" to get a project link</span>'
+  ].join("\n"),
+  open: (arg) => {
+    const map = { anchor: CONFIG.anchorSite, analyzer: CONFIG.analyzerRepo, courses: CONFIG.coursesRepo, moodtunes: CONFIG.moodtunesSite };
+    const key = (arg || "").toLowerCase();
+    if (!key) return 'usage: open &lt;anchor | analyzer | courses | moodtunes&gt;';
+    const url = map[key];
+    if (!url) return `No link for "${esc(key)}". Try: anchor, analyzer, courses, moodtunes.`;
+    return `<a href="${esc(url)}" target="_blank" rel="noopener" style="color:var(--term-accent)">${esc(url.replace("https://", ""))} ↗</a>  <span class="dim">tap to open</span>`;
+  },
+  experience: () => [
+    '<span class="dim">2025–now </span> Founder & Lead Developer, Anchor',
+    '<span class="dim">2026     </span> Software Engineer Intern, Digital Bridge Institute',
+    '<span class="dim">2026     </span> Cyber Security Analyst Intern, CodeAlpha',
+    '<span class="dim">2023–2025</span> IT Support Engineer, C2NAO Global Concept'
+  ].join("\n"),
+  skills: () => Object.entries(SKILLS).map(([g, list]) =>
+    `<span class="acc">${esc(g.toLowerCase())}</span>\n  ${list.map(s => esc(SKILL_LABELS[s] || s)).join(", ")}`).join("\n"),
+  contact: () => {
+    const lines = [`email     ${esc(CONFIG.email)}  <span class="dim">(run "email" to copy)</span>`,
+                   `linkedin  <a href="${esc(CONFIG.linkedin)}" target="_blank" rel="noopener" style="color:var(--term-accent)">${esc(CONFIG.linkedin.replace("https://", ""))}</a>`];
+    const L = (label, url, text) => `${label.padEnd(10)}<a href="${esc(url)}" target="_blank" rel="noopener" style="color:var(--term-accent)">${esc(text)}</a>`;
+    const msg = encodeURIComponent(CONFIG.quickMessage);
+    if (CONFIG.phone) lines.push(L("whatsapp", `https://wa.me/${CONFIG.phone}?text=${msg}`, CONFIG.phoneDisplay));
+    if (CONFIG.phone) lines.push(L("telegram", `https://t.me/+${CONFIG.phone}?text=${msg}`, CONFIG.phoneDisplay));
+    if (CONFIG.x) lines.push(L("x", CONFIG.x, CONFIG.x.replace("https://", "")));
+    if (CONFIG.github) lines.push(L("github", CONFIG.github, CONFIG.github.replace("https://", "")));
+    if (CONFIG.resume) lines.push(`resume    <span class="dim">run "resume" to view it</span>`);
+    return lines.join("\n");
+  },
+  email: () => {
+    try {
+      navigator.clipboard.writeText(CONFIG.email).then(
+        () => { print('<span class="okc">Copied to clipboard.</span>'); scrollEnd(); },
+        () => { print(`Copy blocked here. Select it manually: ${esc(CONFIG.email)}`); scrollEnd(); });
+    } catch (e) { return `Copy blocked here. Select it manually: ${esc(CONFIG.email)}`; }
+    return `Copying ${esc(CONFIG.email)}…`;
+  },
+  anchor: () => { setTimeout(() => goTo("demo"), 250); return "Opening the Anchor demo…"; },
+  resume: () => { setTimeout(openCV, 150); return "Opening resume…"; },
+  cv: () => { setTimeout(openCV, 150); return "Opening resume…"; },
+  theme: () => { const cur = document.documentElement.getAttribute("data-theme"); const next = cur === "dark" ? "light" : "dark"; window.__setTheme(next); return `Theme set to ${next}.`; },
+  ls: () => 'about.txt  anchor/  experience.log  skills.json  contact.txt',
+  sudo: () => 'Permission denied. Nice try, though.',
+  clear: () => { out.innerHTML = ""; return null; }
+};
+COMMANDS["cat"] = COMMANDS.whoami;
+
+/* Social media commands: each one opens the link in a new tab, or prints it if the browser blocks that */
+function socialList() {
+  const msg = encodeURIComponent(CONFIG.quickMessage);
+  const tail = url => { try { return new URL(url).pathname.split("/").filter(Boolean).pop() || ""; } catch (e) { return ""; } };
+  return [
+    { cmd: "linkedin", name: "LinkedIn", url: CONFIG.linkedin, handle: tail(CONFIG.linkedin) },
+    { cmd: "telegram", name: "Telegram", url: CONFIG.phone && `https://t.me/+${CONFIG.phone}?text=${msg}`, handle: CONFIG.phoneDisplay },
+    { cmd: "whatsapp", name: "WhatsApp", url: CONFIG.phone && `https://wa.me/${CONFIG.phone}?text=${msg}`, handle: CONFIG.phoneDisplay },
+    { cmd: "x", name: "X (Twitter)", url: CONFIG.x, handle: "@" + tail(CONFIG.x) },
+    { cmd: "github", name: "GitHub", url: CONFIG.github, handle: tail(CONFIG.github) },
+    { cmd: "meet", name: "Book a Meet", url: CONFIG.bookMeet, handle: "pick a time" }
+  ].filter(s => s.url);
+}
+function linkOut(url, text) {
+  return `<a href="${esc(url)}" target="_blank" rel="noopener" style="color:var(--term-accent)">${esc(text)} ↗</a>`;
+}
+function openSocial(item) {
+  let opened = null;
+  try { opened = window.open(item.url, "_blank"); if (opened) opened.opener = null; } catch (e) { opened = null; }
+  const note = item.cmd === "whatsapp" || item.cmd === "telegram" ? " with a message ready to send" : "";
+  return opened
+    ? `Opening ${esc(item.name)}${note}… <span class="dim">(${esc(item.handle)})</span>`
+    : `${esc(item.name)}: ${linkOut(item.url, item.handle || item.url)}  <span class="dim">tap to open${note}</span>`;
+}
+socialList().forEach(item => { COMMANDS[item.cmd] = () => openSocial(item); });
+if (COMMANDS.x) COMMANDS.twitter = COMMANDS.x;
+if (COMMANDS.meet) COMMANDS.book = COMMANDS.meet;
+COMMANDS.socials = () => {
+  const rows = socialList().map(item => `<span class="acc">${item.cmd.padEnd(9)}</span> ${linkOut(item.url, item.handle || item.name)}`);
+  return rows.concat(['<span class="dim">tip: type a name, like "whatsapp", to open it</span>']).join("\n");
+};
+
+function run(raw) {
+  const cmd = raw.trim();
+  if (!cmd) return;
+  history.push(cmd); hIdx = history.length;
+  print(`<span class="okc">anthony@abuja:~$</span> ${esc(cmd)}`);
+  const name = cmd.split(/\s+/)[0].toLowerCase();
+  const fn = COMMANDS[name];
+  const res = fn ? fn(cmd.split(/\s+/)[1]) : `command not found: ${esc(name)}. Type <span class="acc">help</span> for options.`;
+  if (res !== null) { print(res); print("&nbsp;"); }
+  scrollEnd();
+}
+$("#termForm").addEventListener("submit", e => { e.preventDefault(); run(input.value); input.value = ""; });
+input.addEventListener("keydown", e => {
+  if (e.key === "ArrowUp" && history.length) { e.preventDefault(); hIdx = Math.max(0, hIdx - 1); input.value = history[hIdx]; }
+  if (e.key === "ArrowDown" && history.length) { e.preventDefault(); hIdx = Math.min(history.length, hIdx + 1); input.value = history[hIdx] || ""; }
+});
+$$("#termChips .chip-cmd").forEach(b => b.addEventListener("click", () => run(b.dataset.cmd)));
+
+/* ---------- Anchor demo ---------- */
+const BASE = { boot: 48, ram: 6.1, proc: 142, disk: 0 };
+const TWEAKS = {
+  startup:   { boot: -16, ram: -0.9, proc: -11, disk: 0,   log: ["Saved an undo point", "Disabled 11 startup items", "Startup programs reduced from 17 to 6"] },
+  telemetry: { boot: -2,  ram: -0.2, proc: -6,  disk: 0,   log: ["Stopped service DiagTrack", "Stopped service dmwappushservice", "Set both services to Manual start"] },
+  bloat:     { boot: -3,  ram: -0.6, proc: -9,  disk: 2.1, log: ["Uninstalled 7 preinstalled trial apps", "Removed 9 background tasks they registered"] },
+  temp:      { boot: -1,  ram: 0,    proc: 0,   disk: 3.4, log: ["Cleared %TEMP% (2.6 GB)", "Cleared Windows Update download cache (0.8 GB)"] }
+};
+const MAX = { boot: 60, ram: 8, proc: 200, disk: 6 };
+const logEl = $("#log");
+function logLine(text, cls) { const p = document.createElement("p"); if (cls) p.className = cls; p.textContent = text; logEl.appendChild(p); logEl.scrollTop = logEl.scrollHeight; }
+
+function animateNumber(el, to, decimals) {
+  const from = parseFloat(el.textContent) || 0;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) { el.textContent = to.toFixed(decimals); return; }
+  const t0 = performance.now(), dur = 500;
+  const step = now => {
+    const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+    el.textContent = (from + (to - from) * e).toFixed(decimals);
+    if (k < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+function setDelta(id, diff, unit, decimals) {
+  const el = $("#d-" + id);
+  if (!el) return;
+  if (Math.abs(diff) < 0.001) { el.hidden = true; return; }
+  el.hidden = false;
+  el.textContent = (diff < 0 ? "−" : "+") + Math.abs(diff).toFixed(decimals) + unit;
+}
+function update() {
+  const s = { ...BASE };
+  $$("[data-tweak]").forEach(cb => { if (cb.checked) { const t = TWEAKS[cb.dataset.tweak]; for (const k in s) s[k] += t[k]; } });
+  animateNumber($("#m-boot"), s.boot, 0);
+  animateNumber($("#m-ram"), s.ram, 1);
+  animateNumber($("#m-proc"), s.proc, 0);
+  animateNumber($("#m-disk"), s.disk, 1);
+  setDelta("boot", s.boot - BASE.boot, "s", 0);
+  setDelta("ram", s.ram - BASE.ram, " GB", 1);
+  setDelta("proc", s.proc - BASE.proc, "", 0);
+  $("#b-boot").style.width = (s.boot / MAX.boot * 100) + "%";
+  $("#b-ram").style.width = (s.ram / MAX.ram * 100) + "%";
+  $("#b-proc").style.width = (s.proc / MAX.proc * 100) + "%";
+  $("#b-disk").style.width = (s.disk / MAX.disk * 100) + "%";
+}
+function toggle(cb, quiet) {
+  const t = TWEAKS[cb.dataset.tweak];
+  if (cb.checked) { t.log.forEach(l => logLine("✓ " + l)); }
+  else if (!quiet) { logLine("↺ Reverted: " + cb.closest(".tweak").querySelector("strong").textContent, "dim"); }
+  update();
+}
+$$("[data-tweak]").forEach(cb => cb.addEventListener("change", () => toggle(cb)));
+$("#applyAll").addEventListener("click", () => {
+  const off = $$("[data-tweak]").filter(cb => !cb.checked);
+  if (!off.length) { logLine("Everything is already optimized.", "dim"); return; }
+  off.forEach(cb => { cb.checked = true; toggle(cb); });
+});
+$("#restoreAll").addEventListener("click", () => {
+  const on = $$("[data-tweak]").filter(cb => cb.checked);
+  if (!on.length) { logLine("Nothing to restore. System is at its defaults.", "dim"); return; }
+  on.forEach(cb => { cb.checked = false; });
+  logLine("↺ Rolled back to restore point. All " + on.length + " changes undone.");
+  update();
+});
+
+/* ---------- Skill filter ---------- */
+const SKILL_INFO = {
+  "TypeScript": { kind: "Language · 2012", what: "JavaScript with types. It lets you describe the shape of your data, so mistakes are caught while you write code rather than after users find them.", history: "Microsoft released it in 2012. It was designed by Anders Hejlsberg, who also created C#, and it compiles to plain JavaScript, so it runs anywhere JavaScript does." },
+  "JavaScript": { kind: "Language · 1995", what: "The programming language of the web. It makes pages interactive and now also powers servers, desktop apps and developer tools.", history: "Brendan Eich created it at Netscape in 1995, reportedly in about ten days. It was standardized as ECMAScript in 1997, and Node.js took it beyond the browser in 2009." },
+  "Python": { kind: "Language · 1991", what: "A general-purpose language known for clean, readable code. It is widely used for automation, data work and security tooling.", history: "Guido van Rossum released the first version in 1991 and named it after the comedy group Monty Python, not the snake." },
+  "Java": { kind: "Language · 1995", what: "A general-purpose, object-oriented language that runs on the Java Virtual Machine. It is widely used for desktop apps, Android apps and large business systems.", history: "James Gosling's team at Sun Microsystems created it, first calling it Oak, and released it in 1995 with the promise of write once, run anywhere. Oracle took it over when it acquired Sun in 2010." },
+  "SQL": { kind: "Query language · 1970s", what: "The standard language for working with relational databases: storing, finding, joining and updating rows of data.", history: "Donald Chamberlin and Raymond Boyce developed it at IBM in the early 1970s, building on Edgar Codd's 1970 relational model. It became an ANSI standard in 1986." },
+  "HTML": { kind: "Markup language · 1991", what: "The markup that gives every web page its structure: headings, paragraphs, links, images and forms.", history: "Tim Berners-Lee created it at CERN and published the first description of its tags in 1991. HTML5, the version used today, became a W3C standard in 2014." },
+  "CSS": { kind: "Style sheet language · 1996", what: "Controls how web pages look: layout, colour, typography and spacing, adapted to every screen size.", history: "Håkon Wium Lie proposed it in 1994 while working at CERN, and CSS level 1 became a W3C recommendation in 1996." },
+  "Full-stack development": { kind: "Practice", what: "Building both halves of an application: the front end people see and the back end that stores data and runs the logic.", history: "The role grew with web applications, as small teams needed engineers who could carry a feature from the database all the way to the screen." },
+  "Frontend development": { kind: "Practice", what: "Building the part of a website or app that people see and use, with HTML, CSS and JavaScript, so it is fast, accessible and works on every device.", history: "It became its own discipline in the mid-2000s, after the term Ajax (2005) described web pages that update without a full reload." },
+  "Software testing": { kind: "Practice", what: "Checking that software does what it should before real users depend on it, from single functions to complete user journeys.", history: "Glenford Myers' 1979 book The Art of Software Testing helped establish it as a discipline, arguing that a test's job is to find errors, not to prove there are none." },
+  "Database management": { kind: "Practice", what: "Designing, organizing and maintaining databases so data stays accurate, quick to query and safe.", history: "Modern databases trace back to Edgar Codd's 1970 relational model. The first commercial relational database, Oracle, shipped in 1979." },
+  "System optimization": { kind: "Practice", what: "Making a computer do the same work with less: fewer startup programs and background services, and less wasted memory and disk.", history: "Windows users have tuned their machines with tools like msconfig since Windows 98. Anchor is my take on doing it safely, transparently and reversibly." },
+  "Windows": { kind: "Operating system · 1985", what: "Microsoft's operating system, running on most of the world's desktop and laptop computers.", history: "Windows 1.0 launched in November 1985 as a graphical layer over MS-DOS. Today's Windows descends from the Windows NT line, first released in 1993." },
+  "IT support": { kind: "Practice", what: "Keeping people productive by setting up, fixing and maintaining their computers, accounts, software and networks.", history: "Help desks grew alongside the personal computer in the 1980s, as offices suddenly needed someone to keep every machine running." },
+  "Troubleshooting": { kind: "Method", what: "A structured way to find and fix faults: reproduce the problem, isolate the cause, apply a fix, then confirm it worked.", history: "In 1947, engineers on the Harvard Mark II found a moth trapped in a relay and taped it into their logbook as the first actual case of a bug being found." },
+  "Hardware support": { kind: "Practice", what: "Diagnosing, repairing and upgrading the physical parts of a computer, such as memory, drives, power supplies and peripherals.", history: "Even as more problems move into software, a failing drive or a faulty memory stick still has to be found and replaced by hand." },
+  "Network security": { kind: "Field", what: "Protecting networks and the data on them from unauthorized access, misuse and attack.", history: "It became urgent after the Morris worm of 1988 slowed thousands of computers, one of the first attacks to spread across the early internet." },
+  "Threat detection": { kind: "Practice", what: "Spotting malicious activity early by watching network traffic, system logs and unusual behaviour.", history: "Dorothy Denning's 1987 paper describing an intrusion-detection model laid the groundwork for the monitoring systems used today." },
+  "Firewall management": { kind: "Practice", what: "Writing and maintaining the rules that decide which network traffic is allowed in or out.", history: "The first packet-filtering firewalls appeared in the late 1980s, and stateful firewalls that track whole connections followed in the 1990s." },
+  "VPN access control": { kind: "Practice", what: "Giving remote users an encrypted tunnel into a private network, and deciding exactly who can connect and what they can reach.", history: "PPTP, one of the first widely used VPN protocols, came from a Microsoft-led group in 1996. Modern VPNs use stronger protocols such as IPsec and WireGuard." },
+  "GitHub": { kind: "Platform · 2008", what: "A platform for hosting code with Git, tracking every change and collaborating through pull requests and issues.", history: "Linus Torvalds created Git in 2005, GitHub launched in 2008, and Microsoft acquired it in 2018. All of my public projects live there." },
+  "Cisco Packet Tracer": { kind: "Tool", what: "A network simulator from Cisco Networking Academy for designing, configuring and testing networks without physical equipment.", history: "It is a standard training tool for CCNA students, who use it to practise routing, switching and network troubleshooting." },
+  "Cloud": { kind: "Cloud platform · 2008", what: "Google's set of cloud services for running applications and storing and analysing data at scale.", history: "Its first service, App Engine, launched as a preview in 2008. My Google Cloud Skill Badge in Cloud Architecture (2025) covers designing systems on it." }
+};
+
+(function skillsUI() {
+  const wrap = $("#skillGroups");
+  wrap.innerHTML = Object.entries(SKILLS).map(([g, list]) =>
+    `<div class="skill-group"><h3>${esc(g)}</h3><div class="skill-list">${
+      list.map(s => `<button class="skill" type="button" aria-pressed="false" data-skill="${esc(s)}">${esc(SKILL_LABELS[s] || s)}</button>`).join("")
+    }</div></div>`).join("");
+  const result = $("#skillResult");
+  const targets = $$("[data-skills]");
+  const nameOf = el => { const h = el.querySelector("h3"); const img = h.querySelector("img"); return img ? img.alt : h.childNodes[0].textContent.trim(); };
+  const kindOf = el => el.classList.contains("project") ? "Project" : (el.querySelector(".when") && /Miva/.test(el.textContent) ? "Coursework" : "Role");
+  const EMPTY = 'No skill selected yet. Try <b>TypeScript</b> or <b>Network security</b>.';
+  function clear() {
+    $$(".skill", wrap).forEach(b => b.setAttribute("aria-pressed", "false"));
+    targets.forEach(t => t.classList.remove("hit", "dimmed"));
+    result.classList.remove("filled");
+    result.innerHTML = EMPTY;
+  }
+  wrap.addEventListener("click", e => {
+    const b = e.target.closest(".skill"); if (!b) return;
+    const already = b.getAttribute("aria-pressed") === "true";
+    clear(); if (already) return;
+    b.setAttribute("aria-pressed", "true");
+    const skill = b.dataset.skill;
+    const info = SKILL_INFO[skill] || {};
+    const hits = targets.filter(t => (" " + t.dataset.skills + " ").includes(" " + skill + " "));
+    targets.forEach(t => t.classList.toggle("hit", hits.includes(t)));
+    targets.forEach(t => t.classList.toggle("dimmed", !hits.includes(t)));
+    const seen = new Set();
+    const used = hits.filter(t => { const n = nameOf(t); if (seen.has(n)) return false; seen.add(n); return true; })
+      .map(t => `<button type="button" class="sp-jump" data-i="${targets.indexOf(t)}">${esc(nameOf(t))} <span class="label" style="margin-left:4px">${kindOf(t)}</span></button>`).join("");
+    result.classList.add("filled");
+    result.innerHTML = `
+      <div class="sp-head"><h3>${esc(SKILL_LABELS[skill] || skill)}</h3>${info.kind ? `<span class="sp-kind">${esc(info.kind)}</span>` : ""}</div>
+      ${info.what ? `<p class="sp-what">${esc(info.what)}</p>` : ""}
+      ${info.history ? `<div class="sp-row"><div class="label">A bit of history</div><p>${esc(info.history)}</p></div>` : ""}
+      <div class="sp-row"><div class="label">Where I used it</div>${used ? `<div class="sp-used">${used}</div>` : `<p>Part of my toolkit, not tied to a specific role on this page.</p>`}</div>
+      <div class="sp-foot"><button type="button" class="sp-clear">Clear selection</button></div>`;
+    $(".sp-clear", result).addEventListener("click", clear);
+    $$(".sp-jump", result).forEach(j => j.addEventListener("click", () => {
+      const t = targets[+j.dataset.i];
+      if (t) t.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" });
+    }));
+    const r = result.getBoundingClientRect();
+    if (r.top > window.innerHeight * 0.8) result.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" });
+  });
+})();
+/* ---------- Seasonal decorations: switch on automatically by the visitor's date ---------- */
+(function seasonal() {
+  const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const fmt = d => `${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+  function easterSunday(y) {
+    const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4,
+          f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30,
+          i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451),
+          month = Math.floor((h + l - 7 * m + 114) / 31), day = ((h + l - 7 * m + 114) % 31) + 1;
+    return new Date(y, month - 1, day);
+  }
+  let hijriFmt = null;
+  try { hijriFmt = new Intl.DateTimeFormat("en-u-ca-islamic-umalqura", { day: "numeric", month: "numeric" }); } catch (e) {}
+  const hijri = d => { if (!hijriFmt) return null; try { const p = hijriFmt.formatToParts(d); return { m: +p.find(x => x.type === "month").value, d: +p.find(x => x.type === "day").value }; } catch (e) { return null; } };
+  const dayDiff = (a, b) => Math.round((new Date(a.getFullYear(), a.getMonth(), a.getDate()) - new Date(b.getFullYear(), b.getMonth(), b.getDate())) / 86400000);
+  const nyYear = d => d.getMonth() === 11 ? d.getFullYear() + 1 : d.getFullYear();
+
+  const HOLIDAYS = [
+    { id: "newyear", name: "New Year", color: "#d4a017",
+      greet: d => `Happy New Year ${nyYear(d)}`,
+      note: d => `Happy New Year! Thanks for stopping by. Here's to building lighter, faster things together in ${nyYear(d)}.`,
+      test: d => (d.getMonth() === 11 && d.getDate() === 31) || (d.getMonth() === 0 && d.getDate() <= 3) },
+    { id: "christmas", name: "Christmas", color: "#c0392b",
+      greet: () => "Merry Christmas",
+      note: () => "Merry Christmas from Abuja! Wishing you a peaceful season and a fast, clutter-free PC.",
+      test: d => d.getMonth() === 11 && d.getDate() >= 18 && d.getDate() <= 30 },
+    { id: "eidfitr", name: "Eid al-Fitr", color: "#b8912c",
+      greet: () => "Eid Mubarak",
+      note: () => "Eid Mubarak! Wishing you and your family peace, joy and blessings this Eid al-Fitr.",
+      test: d => { const h = hijri(d); return !!h && h.m === 10 && h.d <= 3; } },
+    { id: "eidadha", name: "Eid al-Adha", color: "#b8912c",
+      greet: () => "Eid Mubarak",
+      note: () => "Eid Mubarak! Wishing you and your loved ones a blessed Eid al-Adha.",
+      test: d => { const h = hijri(d); return !!h && h.m === 12 && h.d >= 10 && h.d <= 13; } },
+    { id: "easter", name: "Easter", color: "#c06c96",
+      greet: () => "Happy Easter",
+      note: () => "Happy Easter! Wishing you a joyful and restful holiday.",
+      test: d => { const diff = dayDiff(d, easterSunday(d.getFullYear())); return diff >= -2 && diff <= 1; } },
+    { id: "independence", name: "Nigeria Independence Day", color: "#118a3e",
+      greet: () => "Happy Independence Day, Nigeria",
+      note: () => "Happy Independence Day, Nigeria! Proud to be building from Abuja.",
+      test: d => d.getMonth() === 9 && d.getDate() <= 2 },
+    { id: "valentine", name: "Valentine's Day", color: "#d6336c",
+      greet: () => "Happy Valentine's Day",
+      note: () => "Happy Valentine's Day! Sending a little love to everyone who builds, tests and ships.",
+      test: d => d.getMonth() === 1 && d.getDate() >= 12 && d.getDate() <= 15 },
+    { id: "halloween", name: "Halloween", color: "#e8590c",
+      greet: () => "Happy Halloween",
+      note: () => "Happy Halloween! The scariest thing on this page is a laptop with 142 background processes.",
+      test: d => d.getMonth() === 9 && d.getDate() >= 25 }
+  ];
+  const activeOn = d => HOLIDAYS.find(h => h.test(d)) || null;
+  function nextStart(h, from) {
+    for (let i = 0; i < 420; i++) {
+      const d = new Date(from.getFullYear(), from.getMonth(), from.getDate() + i);
+      if (h.test(d)) {
+        let s = d;
+        while (dayDiff(s, from) > 0 && h.test(new Date(s.getFullYear(), s.getMonth(), s.getDate() - 1))) s = new Date(s.getFullYear(), s.getMonth(), s.getDate() - 1);
+        return s;
+      }
+    }
+    return null;
+  }
+
+  const today = new Date();
+  // Preview any holiday by opening the page with #season-christmas, #season-halloween, etc.
+  const forced = (location.hash.match(/^#season-([a-z]+)$/) || [])[1];
+  const holiday = (forced && HOLIDAYS.find(h => h.id === forced)) || activeOn(today);
+  const storeKey = h => `anm-season-${h.id}-${today.getFullYear()}`;
+  const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+
+  // Terminal command, available all year
+  COMMANDS.holiday = () => {
+    if (holiday) return `${esc(holiday.name)}: ${esc(holiday.note(today))}`;
+    const up = HOLIDAYS.map(h => ({ h, d: nextStart(h, today) })).filter(x => x.d).sort((a, b) => a.d - b.d)[0];
+    return up ? `No holiday today. Next up: ${esc(up.h.name)} on ${fmt(up.d)}.` : "No holiday today.";
+  };
+  COMMANDS.season = COMMANDS.holiday;
+
+  if (!holiday) return;
+  const hiddenDecor = !forced && store.get(storeKey(holiday) + "-decor") === "off";
+  const hiddenNote = !forced && store.get(storeKey(holiday) + "-note") === "off";
+
+  // The little message: greeting badge, note card and a line in the terminal
+  const nav = document.querySelector(".nav");
+  nav.style.setProperty("--season", holiday.color);
+  nav.style.setProperty("--season-soft", `color-mix(in srgb, ${holiday.color} 16%, transparent)`);
+  const note = $("#seasonNote");
+  note.style.setProperty("--season", holiday.color);
+  $("#seasonGreetText").textContent = holiday.greet(today);
+  $("#seasonNoteText").textContent = holiday.note(today);
+  $("#seasonGreet").classList.add("on");
+  print(`<span class="acc">note</span>  ${esc(holiday.note(today))} <span class="dim">— Anthony</span>`);
+  print("&nbsp;");
+  if (!hiddenNote) setTimeout(() => note.classList.add("on"), 900);
+  $("#seasonNoteClose").addEventListener("click", () => { note.classList.remove("on"); store.set(storeKey(holiday) + "-note", "off"); });
+
+  // Decorations
+  const canvas = $("#seasonCanvas"), ctx = canvas.getContext("2d");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let W = 0, H = 0, parts = [], raf = 0, running = false;
+  const t0 = performance.now();
+  const rand = (a, b) => a + Math.random() * (b - a);
+  const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+  const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const navH = () => nav.getBoundingClientRect().bottom;
+
+  function heart(x, y, s) {
+    ctx.beginPath(); ctx.moveTo(x, y + s * 0.3);
+    ctx.bezierCurveTo(x, y, x - s * 0.5, y, x - s * 0.5, y + s * 0.3);
+    ctx.bezierCurveTo(x - s * 0.5, y + s * 0.6, x, y + s * 0.8, x, y + s);
+    ctx.bezierCurveTo(x, y + s * 0.8, x + s * 0.5, y + s * 0.6, x + s * 0.5, y + s * 0.3);
+    ctx.bezierCurveTo(x + s * 0.5, y, x, y, x, y + s * 0.3); ctx.fill();
+  }
+  function star(x, y, r) {
+    ctx.beginPath();
+    for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4, rr = i % 2 ? r * 0.35 : r; ctx.lineTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr); }
+    ctx.closePath(); ctx.fill();
+  }
+  function bat(x, y, s, flap) {
+    const w = s * (0.55 + 0.45 * Math.abs(Math.sin(flap)));
+    ctx.beginPath(); ctx.moveTo(x, y);
+    ctx.quadraticCurveTo(x - w * 0.5, y - s * 0.5, x - w, y - s * 0.1);
+    ctx.quadraticCurveTo(x - w * 0.7, y + s * 0.05, x - w * 0.55, y + s * 0.25);
+    ctx.quadraticCurveTo(x - w * 0.3, y + s * 0.05, x, y + s * 0.3);
+    ctx.quadraticCurveTo(x + w * 0.3, y + s * 0.05, x + w * 0.55, y + s * 0.25);
+    ctx.quadraticCurveTo(x + w * 0.7, y + s * 0.05, x + w, y - s * 0.1);
+    ctx.quadraticCurveTo(x + w * 0.5, y - s * 0.5, x, y); ctx.fill();
+  }
+  function resize() {
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    document.documentElement.style.setProperty("--nav-h", Math.round(nav.getBoundingClientRect().height) + "px");
+  }
+  function setup() {
+    parts = [];
+    const id = holiday.id, area = W * H / 10000, top = navH();
+    if (id === "christmas") {
+      for (let i = 0; i < Math.round(area * 0.9); i++) parts.push({ k: "snow", x: rand(0, W), y: rand(-H, H), r: rand(1.2, 3), vy: rand(0.25, 0.75), sway: rand(0, 6.28) });
+      const n = Math.max(8, Math.round(W / 52));
+      for (let i = 0; i <= n; i++) parts.push({ k: "bulb", i, n, c: ["#e03131", "#2f9e44", "#f59f00", "#1c7ed6"][i % 4], ph: rand(0, 6.28) });
+    }
+    if (id === "valentine") for (let i = 0; i < Math.round(area * 0.22); i++) parts.push({ k: "heart", x: rand(0, W), y: rand(0, H * 1.4), s: rand(8, 15), vy: rand(0.2, 0.5), sway: rand(0, 6.28), c: pick(["#e64980", "#f783ac", "#d6336c"]) });
+    if (id === "newyear" || id === "independence") {
+      const cols = id === "newyear" ? ["#f2c94c", "#56ccf2", "#eb5757", "#6fcf97", "#bb6bd9"] : ["#118a3e", "#ffffff", "#118a3e", "#9be3b4"];
+      for (let i = 0; i < Math.round(area * 0.8); i++) parts.push({ k: "conf", x: rand(0, W), y: rand(-H * 1.2, -10), w: rand(4, 8), h: rand(7, 12), vy: rand(0.8, 1.8), rot: rand(0, 6.28), vr: rand(-0.08, 0.08), sway: rand(0, 6.28), c: pick(cols) });
+      if (id === "newyear") for (let i = 0; i < 12; i++) parts.push({ k: "spark", x: rand(0, W), y: rand(top + 10, H * 0.8), r: rand(4, 7), ph: rand(0, 6.28), c: "#f2c94c" });
+    }
+    if (id === "easter") for (let i = 0; i < Math.round(area * 0.2); i++) parts.push({ k: "petal", x: rand(0, W), y: rand(-H, H), r: rand(3, 5), vy: rand(0.2, 0.5), rot: rand(0, 6.28), sway: rand(0, 6.28), c: pick(["#f6c6d8", "#bfe3d0", "#c9d6fb", "#fbe3a6"]) });
+    if (id === "eidfitr" || id === "eidadha") for (let i = 0; i < 18; i++) parts.push({ k: "spark", x: rand(0, W), y: rand(top + 6, H * 0.9), r: rand(2.5, 5), ph: rand(0, 6.28), c: "#e8c35a" });
+    if (id === "halloween") for (let i = 0; i < 5; i++) parts.push({ k: "bat", x: rand(-W, W), y: rand(top + 30, H * 0.7), s: rand(12, 20), vx: rand(0.6, 1.2), ph: rand(0, 6.28), bob: rand(0, 6.28) });
+  }
+  let confettiDone = false;
+  function draw(now) {
+    const t = (now - t0) / 1000, still = reduce;
+    ctx.clearRect(0, 0, W, H);
+    const top = navH(), snowC = cssVar("--snow"), inkC = cssVar("--ink"), mutedC = cssVar("--muted");
+    let fallingConfetti = 0;
+    for (const p of parts) {
+      if (p.k === "snow") {
+        if (!still) { p.y += p.vy; p.x += Math.sin(t + p.sway) * 0.3; if (p.y > H + 4) { p.y = -4; p.x = rand(0, W); } }
+        ctx.globalAlpha = 0.8; ctx.fillStyle = snowC; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.28); ctx.fill();
+      } else if (p.k === "heart") {
+        if (!still) { p.y -= p.vy; p.x += Math.sin(t * 0.8 + p.sway) * 0.35; if (p.y < -20) { p.y = H + 10; p.x = rand(0, W); } }
+        ctx.globalAlpha = 0.45; ctx.fillStyle = p.c; heart(p.x, p.y, p.s);
+      } else if (p.k === "conf") {
+        // one celebratory shower on page load, then it clears away
+        if (!still) { p.y += p.vy; p.rot += p.vr; p.x += Math.sin(t * 2 + p.sway) * 0.6; }
+        else if (p.y < 0) { p.y = rand(top, H); }
+        if (p.y < H + 20) fallingConfetti++;
+        ctx.globalAlpha = 0.9; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.fillStyle = p.c;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); ctx.strokeStyle = "rgba(0,0,0,0.15)"; ctx.lineWidth = 0.5; ctx.strokeRect(-p.w / 2, -p.h / 2, p.w, p.h); ctx.restore();
+      } else if (p.k === "spark") {
+        ctx.globalAlpha = still ? 0.7 : 0.3 + 0.5 * (0.5 + 0.5 * Math.sin(t * 2.2 + p.ph)); ctx.fillStyle = p.c; star(p.x, p.y, p.r);
+      } else if (p.k === "petal") {
+        if (!still) { p.y += p.vy; p.rot += 0.01; p.x += Math.sin(t + p.sway) * 0.4; if (p.y > H + 6) { p.y = -6; p.x = rand(0, W); } }
+        ctx.globalAlpha = 0.75; ctx.fillStyle = p.c; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.beginPath(); ctx.ellipse(0, 0, p.r, p.r * 0.6, 0, 0, 6.28); ctx.fill(); ctx.restore();
+      } else if (p.k === "bat") {
+        if (!still) { p.x += p.vx; if (p.x > W + 40) { p.x = -40; p.y = rand(top + 30, H * 0.7); } }
+        ctx.globalAlpha = 0.7; ctx.fillStyle = inkC; bat(p.x, p.y + Math.sin(t * 2 + p.bob) * 6, p.s, still ? 1 : t * 9 + p.ph);
+      } else if (p.k === "bulb") {
+        const sag = 8, y = top + 2 + (p.i % 2) * sag, x = (p.i / p.n) * W;
+        if (p.i < p.n) {
+          const x2 = ((p.i + 1) / p.n) * W, y2 = top + 2 + ((p.i + 1) % 2) * sag;
+          ctx.globalAlpha = 0.55; ctx.strokeStyle = mutedC; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x, y); ctx.quadraticCurveTo((x + x2) / 2, Math.max(y, y2) + 6, x2, y2); ctx.stroke();
+        }
+        ctx.globalAlpha = still ? 1 : 0.55 + 0.45 * (0.5 + 0.5 * Math.sin(t * 3 + p.ph)); ctx.fillStyle = p.c;
+        ctx.beginPath(); ctx.ellipse(x, y + 7, 3.4, 5, 0, 0, 6.28); ctx.fill();
+        ctx.globalAlpha = 0.5; ctx.fillStyle = mutedC; ctx.fillRect(x - 2, y, 4, 3);
+      }
+    }
+    ctx.globalAlpha = 1;
+    // New Year / Independence: stop the loop once the confetti has fallen away (sparkles keep twinkling on New Year)
+    if ((holiday.id === "independence") && !still && fallingConfetti === 0) { confettiDone = true; ctx.clearRect(0, 0, W, H); running = false; return; }
+    if (!still) raf = requestAnimationFrame(draw); else running = false;
+  }
+  function start() { if (running) return; running = true; raf = requestAnimationFrame(draw); }
+  function stop() { cancelAnimationFrame(raf); running = false; ctx.clearRect(0, 0, W, H); }
+  const ORN = { independence: ["seasonRibbon"], halloween: ["seasonCobweb"], eidfitr: ["seasonMoon"], eidadha: ["seasonMoon"], easter: ["seasonEggs"] };
+  function showDecor(on) {
+    (ORN[holiday.id] || []).forEach(id => $("#" + id).classList.toggle("on", on));
+    if (on) { resize(); setup(); start(); } else stop();
+  }
+  window.addEventListener("resize", () => { if (!canvas.dataset.off) { resize(); setup(); if (reduce || confettiDone) { running = false; start(); } } });
+  $("#seasonHide").addEventListener("click", () => {
+    const off = !canvas.dataset.off;
+    canvas.dataset.off = off ? "1" : "";
+    showDecor(!off);
+    $("#seasonHide").textContent = off ? "+" : "×";
+    $("#seasonHide").setAttribute("aria-label", off ? "Show holiday decorations" : "Hide holiday decorations");
+    store.set(storeKey(holiday) + "-decor", off ? "off" : "on");
+  });
+  if (hiddenDecor) { canvas.dataset.off = "1"; $("#seasonHide").textContent = "+"; $("#seasonHide").setAttribute("aria-label", "Show holiday decorations"); }
+  else showDecor(true);
+})();
+</script>
+</body>
+</html>
