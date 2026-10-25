@@ -309,6 +309,16 @@ canvas.season-canvas { position: fixed; inset: 0; width: 100vw; height: 100vh; p
 .foot-quote blockquote { margin: 0; font-size: 0.85rem; line-height: 1.6; color: var(--muted); text-wrap: pretty; transition: opacity 0.25s; }
 .foot-quote figcaption { display: flex; justify-content: flex-end; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--muted); opacity: 0.85; }
 @media (max-width: 640px) { .foot-quote { text-align: left; } .foot-quote figcaption { justify-content: flex-start; } }
+footer { position: relative; overflow: hidden; }
+.foot-web { position: absolute; top: 0; right: env(safe-area-inset-right, 0px); width: clamp(84px, 11vw, 130px); height: auto; color: var(--muted); opacity: 0.5; transform: scaleX(-1); pointer-events: none; display: none; }
+.foot-web.on { display: block; }
+.foot-ribbon { position: absolute; left: 0; right: 0; top: 0; height: 5px; background: linear-gradient(90deg, #118a3e 0 33.3%, #ffffff 33.3% 66.6%, #118a3e 66.6%); box-shadow: 0 1px 0 rgba(0, 0, 0, 0.12); pointer-events: none; display: none; }
+.foot-ribbon.on { display: block; }
+.foot-hang { position: absolute; top: 0; right: calc(8px + env(safe-area-inset-right, 0px)); width: clamp(84px, 10vw, 120px); height: auto; color: var(--muted); pointer-events: none; display: none; }
+.foot-hang.on { display: block; }
+.foot-eggs { position: absolute; right: calc(12px + env(safe-area-inset-right, 0px)); bottom: 6px; width: clamp(110px, 13vw, 160px); height: auto; pointer-events: none; display: none; }
+.foot-eggs.on { display: block; }
+footer.egg-room .wrap { padding-bottom: 96px; }
 footer .wrap { padding-block: 28px 40px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; color: var(--muted); font-size: 0.85rem; }
 </style>
 </head>
@@ -563,6 +573,11 @@ Studying B.Sc. Software Engineering (Miva Open University).</p>
 </dialog>
 
 <footer>
+  <div class="foot-ribbon" id="footRibbon"></div>
+  <svg class="foot-hang" id="footHearts" viewBox="0 0 120 110" aria-hidden="true"><g stroke="currentColor" stroke-width="1" opacity="0.7"><line x1="30" y1="0" x2="30" y2="44"/><line x1="62" y1="0" x2="62" y2="74"/><line x1="94" y1="0" x2="94" y2="34"/></g><g transform="translate(30 44)"><path d="M0 -2C-5 -10 -16 -4 -9 5L0 13L9 5C16 -4 5 -10 0 -2Z" fill="#e64980"/></g><g transform="translate(62 74) scale(1.25)"><path d="M0 -2C-5 -10 -16 -4 -9 5L0 13L9 5C16 -4 5 -10 0 -2Z" fill="#d6336c"/></g><g transform="translate(94 34) scale(0.85)"><path d="M0 -2C-5 -10 -16 -4 -9 5L0 13L9 5C16 -4 5 -10 0 -2Z" fill="#f783ac"/></g></svg>
+  <svg class="foot-hang" id="footLanterns" viewBox="0 0 120 120" aria-hidden="true"><g stroke="#b8912c" stroke-width="1"><line x1="38" y1="0" x2="38" y2="30"/><line x1="86" y1="0" x2="86" y2="52"/></g><g transform="translate(38 30)"><path d="M-6 0h12l3 6h-18z" fill="#b8912c"/><path d="M-9 6h18l-2 30h-14z" fill="#e8c35a"/><path d="M-4 10h8l-1 22h-6z" fill="#fff4cf" opacity="0.85"/><path d="M-7 36h14l-3 5h-8z" fill="#b8912c"/></g><g transform="translate(86 52) scale(0.8)"><path d="M-6 0h12l3 6h-18z" fill="#b8912c"/><path d="M-9 6h18l-2 30h-14z" fill="#e8c35a"/><path d="M-4 10h8l-1 22h-6z" fill="#fff4cf" opacity="0.85"/><path d="M-7 36h14l-3 5h-8z" fill="#b8912c"/></g></svg>
+  <svg class="foot-eggs" id="footEggs" viewBox="0 0 170 64" aria-hidden="true"><g transform="translate(30 38)"><ellipse rx="17" ry="22" fill="#c9d6fb"/><path d="M-15 0l7.5-6 7.5 6 7.5-6 7.5 6" fill="none" stroke="#ffffff" stroke-width="3"/></g><g transform="translate(78 34)"><ellipse rx="19" ry="25" fill="#fbe3a6"/><path d="M-18 -4h36M-18 7h36" stroke="#f6c6d8" stroke-width="4"/></g><g transform="translate(128 40)"><ellipse rx="16" ry="21" fill="#f6c6d8"/><circle cx="-5" cy="-6" r="3" fill="#fff"/><circle cx="6" cy="1" r="3" fill="#fff"/><circle cx="-3" cy="10" r="3" fill="#fff"/></g></svg>
+  <svg class="foot-web" id="seasonCobwebFoot" viewBox="0 0 120 120" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1"><path d="M0 0L120 70M0 0L95 95M0 0L70 120M0 0L120 25M0 0L25 120"/><path d="M0 28Q14 22 26 26Q30 14 28 0"/><path d="M0 55Q28 44 52 50Q56 26 54 0"/><path d="M0 84Q42 66 78 74Q82 40 80 0"/></g><line x1="62" y1="57" x2="62" y2="92" stroke="currentColor"/><circle cx="62" cy="95" r="4" fill="currentColor"/></svg>
   <div class="wrap">
     <span>© <span id="year">2026</span> Anthony Ndidi Mbagwu</span>
     <figure class="foot-quote">
@@ -1193,6 +1208,7 @@ const SKILL_INFO = {
   const pick = arr => arr[Math.floor(Math.random() * arr.length)];
   const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
   const navH = () => nav.getBoundingClientRect().bottom;
+  const footEl = document.querySelector("footer");
 
   function heart(x, y, s) {
     ctx.beginPath(); ctx.moveTo(x, y + s * 0.3);
@@ -1235,6 +1251,7 @@ const SKILL_INFO = {
     if (id === "newyear" || id === "independence") {
       const cols = id === "newyear" ? ["#f2c94c", "#56ccf2", "#eb5757", "#6fcf97", "#bb6bd9"] : ["#118a3e", "#ffffff", "#118a3e", "#9be3b4"];
       for (let i = 0; i < Math.round(area * 0.8); i++) parts.push({ k: "conf", x: rand(0, W), y: rand(-H * 1.2, -10), w: rand(4, 8), h: rand(7, 12), vy: rand(0.8, 1.8), rot: rand(0, 6.28), vr: rand(-0.08, 0.08), sway: rand(0, 6.28), c: pick(cols) });
+      if (id === "newyear") for (let i = 0; i < 10; i++) parts.push({ k: "fspark", rx: rand(0.04, 0.96), ry: rand(0.15, 0.85), r: rand(3, 6), ph: rand(0, 6.28), c: "#f2c94c" });
       if (id === "newyear") for (let i = 0; i < 12; i++) parts.push({ k: "spark", x: rand(0, W), y: rand(top + 10, H * 0.8), r: rand(4, 7), ph: rand(0, 6.28), c: "#f2c94c" });
     }
     if (id === "easter") for (let i = 0; i < Math.round(area * 0.2); i++) parts.push({ k: "petal", x: rand(0, W), y: rand(-H, H), r: rand(3, 5), vy: rand(0.2, 0.5), rot: rand(0, 6.28), sway: rand(0, 6.28), c: pick(["#f6c6d8", "#bfe3d0", "#c9d6fb", "#fbe3a6"]) });
@@ -1254,6 +1271,7 @@ const SKILL_INFO = {
     const t = clock;
     ctx.clearRect(0, 0, W, H);
     const top = navH(), snowC = cssVar("--snow"), inkC = cssVar("--ink"), mutedC = cssVar("--muted");
+    const fr = footEl.getBoundingClientRect(), fVis = fr.top < H && fr.bottom > 0;
     let fallingConfetti = 0;
     for (const p of parts) {
       if (p.k === "snow") {
@@ -1281,14 +1299,21 @@ const SKILL_INFO = {
         if (p.x > W + 40) { p.x = -40; p.y = rand(top + 30, H * 0.7); }
         ctx.globalAlpha = 0.7; ctx.fillStyle = inkC; bat(p.x, p.y + Math.sin(t * 2 + p.bob) * 6, p.s, t * 9 + p.ph);
       } else if (p.k === "bulb") {
-        const sag = 8, y = top + 2 + (p.i % 2) * sag, x = (p.i / p.n) * W;
-        if (p.i < p.n) {
-          const x2 = ((p.i + 1) / p.n) * W, y2 = top + 2 + ((p.i + 1) % 2) * sag;
-          ctx.globalAlpha = 0.55; ctx.strokeStyle = mutedC; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x, y); ctx.quadraticCurveTo((x + x2) / 2, Math.max(y, y2) + 6, x2, y2); ctx.stroke();
+        // one string of lights under the menu bar, and another along the top of the footer when it is on screen
+        const lines = [top + 2];
+        if (fVis) lines.push(fr.top + 1);
+        for (const base of lines) {
+          const sag = 8, y = base + (p.i % 2) * sag, x = (p.i / p.n) * W;
+          if (p.i < p.n) {
+            const x2 = ((p.i + 1) / p.n) * W, y2 = base + ((p.i + 1) % 2) * sag;
+            ctx.globalAlpha = 0.55; ctx.strokeStyle = mutedC; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x, y); ctx.quadraticCurveTo((x + x2) / 2, Math.max(y, y2) + 6, x2, y2); ctx.stroke();
+          }
+          ctx.globalAlpha = 0.55 + 0.45 * (0.5 + 0.5 * Math.sin(t * 3 + p.ph + (base === lines[0] ? 0 : 1.7))); ctx.fillStyle = p.c;
+          ctx.beginPath(); ctx.ellipse(x, y + 7, 3.4, 5, 0, 0, 6.28); ctx.fill();
+          ctx.globalAlpha = 0.5; ctx.fillStyle = mutedC; ctx.fillRect(x - 2, y, 4, 3);
         }
-        ctx.globalAlpha = 0.55 + 0.45 * (0.5 + 0.5 * Math.sin(t * 3 + p.ph)); ctx.fillStyle = p.c;
-        ctx.beginPath(); ctx.ellipse(x, y + 7, 3.4, 5, 0, 0, 6.28); ctx.fill();
-        ctx.globalAlpha = 0.5; ctx.fillStyle = mutedC; ctx.fillRect(x - 2, y, 4, 3);
+      } else if (p.k === "fspark") {
+        if (fVis) { ctx.globalAlpha = 0.3 + 0.55 * (0.5 + 0.5 * Math.sin(t * 2.4 + p.ph)); ctx.fillStyle = p.c; star(p.rx * W, fr.top + p.ry * fr.height, p.r); }
       }
     }
     ctx.globalAlpha = 1;
@@ -1298,9 +1323,10 @@ const SKILL_INFO = {
   }
   function start() { if (running) return; running = true; last = 0; raf = requestAnimationFrame(draw); }
   function stop() { cancelAnimationFrame(raf); running = false; ctx.clearRect(0, 0, W, H); }
-  const ORN = { independence: ["seasonRibbon"], halloween: ["seasonCobweb"], eidfitr: ["seasonMoon"], eidadha: ["seasonMoon"], easter: ["seasonEggs"] };
+  const ORN = { independence: ["seasonRibbon", "footRibbon"], halloween: ["seasonCobweb", "seasonCobwebFoot"], eidfitr: ["seasonMoon", "footLanterns"], eidadha: ["seasonMoon", "footLanterns"], easter: ["seasonEggs", "footEggs"], valentine: ["footHearts"] };
   function showDecor(on) {
     (ORN[holiday.id] || []).forEach(id => $("#" + id).classList.toggle("on", on));
+    footEl.classList.toggle("egg-room", on && holiday.id === "easter");
     if (on) { resize(); setup(); confettiDone = false; start(); } else stop();
   }
   // On phones the address bar showing or hiding fires "resize" while scrolling. Only re-scatter the
