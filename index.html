@@ -51,6 +51,9 @@
 }
 
 * { box-sizing: border-box; }
+html, body { margin: 0; }
+[hidden] { display: none !important; }
+img { max-width: 100%; }
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; animation: none !important; } }
 body {
@@ -288,6 +291,8 @@ canvas.season-canvas { position: fixed; inset: 0; width: 100vw; height: 100vh; p
 .greet { display: none; align-items: center; gap: 4px; border-radius: 999px; padding: 3px 4px 3px 12px; font: 600 0.8rem var(--font-body); background: var(--season-soft, var(--accent-soft)); color: var(--ink); border: 1px solid var(--season, var(--accent)); white-space: nowrap; max-width: 100%; min-width: 0; }
 .greet.on { display: inline-flex; }
 .greet span { overflow: hidden; text-overflow: ellipsis; }
+.greet .g-short { display: none; }
+@media (max-width: 480px) { .greet .g-long { display: none; } .greet .g-short { display: inline; } }
 .greet button { flex: none; border: 0; background: transparent; color: inherit; cursor: pointer; font: 600 0.95rem var(--font-body); width: 24px; height: 24px; border-radius: 50%; line-height: 1; }
 .greet button:hover { background: color-mix(in srgb, currentColor 14%, transparent); }
 @media (max-width: 760px) { .nav .greet.on { margin-left: auto; } .nav .greet.on ~ .icon-btn { margin-left: 0; } }
@@ -300,6 +305,10 @@ canvas.season-canvas { position: fixed; inset: 0; width: 100vw; height: 100vh; p
 .season-note .sig { display: block; margin-top: 6px; font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted); }
 .season-note button { position: absolute; top: 8px; right: 8px; border: 0; background: transparent; color: var(--muted); width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font: 600 1rem var(--font-body); }
 .season-note button:hover { color: var(--ink); background: var(--bg); }
+.foot-quote { margin: 0; max-width: 62ch; text-align: right; display: grid; gap: 4px; }
+.foot-quote blockquote { margin: 0; font-size: 0.85rem; line-height: 1.6; color: var(--muted); text-wrap: pretty; transition: opacity 0.25s; }
+.foot-quote figcaption { display: flex; justify-content: flex-end; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--muted); opacity: 0.85; }
+@media (max-width: 640px) { .foot-quote { text-align: left; } .foot-quote figcaption { justify-content: flex-start; } }
 footer .wrap { padding-block: 28px 40px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; color: var(--muted); font-size: 0.85rem; }
 </style>
 </head>
@@ -315,7 +324,7 @@ footer .wrap { padding-block: 28px 40px; border-top: 1px solid var(--line); disp
       <li><a href="#skills">Skills</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-    <span class="greet" id="seasonGreet"><span id="seasonGreetText"></span><button type="button" id="seasonHide" aria-label="Hide holiday decorations">×</button></span>
+    <span class="greet" id="seasonGreet"><span id="seasonGreetText" class="g-long"></span><span id="seasonGreetShort" class="g-short"></span><button type="button" id="seasonHide" aria-label="Hide holiday decorations">×</button></span>
     <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch colour theme">theme: auto</button>
   </div>
 </header>
@@ -556,7 +565,10 @@ Studying B.Sc. Software Engineering (Miva Open University).</p>
 <footer>
   <div class="wrap">
     <span>© <span id="year">2026</span> Anthony Ndidi Mbagwu</span>
-    <span class="mono">Hand-built with HTML, CSS and JavaScript</span>
+    <figure class="foot-quote">
+      <blockquote class="mono" id="quoteText">“Design is intelligence made visible.”</blockquote>
+      <figcaption class="mono"><span id="quoteBy">— Alina Wheeler</span></figcaption>
+    </figure>
   </div>
 </footer>
 
@@ -1005,6 +1017,33 @@ const SKILL_INFO = {
     if (r.top > window.innerHeight * 0.8) result.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" });
   });
 })();
+/* ---------- Footer quotes: a random one on each visit (never the same one twice in a row) ---------- */
+(function footerQuotes() {
+  const QUOTES = [
+    ["The way to get started is to quit talking and begin doing.", "Walt Disney"],
+    ["In order to be irreplaceable one must always be different.", "Coco Chanel"],
+    ["I have a personal philosophy in life: If somebody else can do something that I'm doing, they should do it. And what I want to do is find things that would represent a unique contribution to the world.", "Anthony Ndidi Mbagwu"],
+    ["You are allowed to be both a masterpiece and a work in progress simultaneously.", "Sophia Bush"],
+    ["A designer knows he has achieved perfection not when there is nothing left to add, but when there is nothing left to take away.", "Antoine de Saint-Exupéry"],
+    ["Design is intelligence made visible.", "Alina Wheeler"],
+    ["Receive without conceit, release without struggle.", "Marcus Aurelius"],
+    ["Confine yourself to the present.", "Marcus Aurelius"],
+    ["A strong UI impresses users. A strong backend protects them.", "Anthony Ndidi Mbagwu"]
+  ];
+  const text = $("#quoteText"), by = $("#quoteBy");
+  let idx = -1;
+  try { idx = +(localStorage.getItem("anm-quote") ?? -1); } catch (e) {}
+  function show() {
+    let next = Math.floor(Math.random() * QUOTES.length);
+    if (next === idx) next = (next + 1 + Math.floor(Math.random() * (QUOTES.length - 1))) % QUOTES.length;
+    idx = next;
+    try { localStorage.setItem("anm-quote", String(idx)); } catch (e) {}
+    const [q, who] = QUOTES[idx];
+    text.textContent = `“${q}”`; by.textContent = `— ${who}`;
+  }
+  show();
+})();
+
 /* ---------- Seasonal decorations: switch on automatically by the visitor's date ---------- */
 (function seasonal() {
   const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -1020,40 +1059,72 @@ const SKILL_INFO = {
   try { hijriFmt = new Intl.DateTimeFormat("en-u-ca-islamic-umalqura", { day: "numeric", month: "numeric" }); } catch (e) {}
   const hijri = d => { if (!hijriFmt) return null; try { const p = hijriFmt.formatToParts(d); return { m: +p.find(x => x.type === "month").value, d: +p.find(x => x.type === "day").value }; } catch (e) { return null; } };
   const dayDiff = (a, b) => Math.round((new Date(a.getFullYear(), a.getMonth(), a.getDate()) - new Date(b.getFullYear(), b.getMonth(), b.getDate())) / 86400000);
-  const nyYear = d => d.getMonth() === 11 ? d.getFullYear() + 1 : d.getFullYear();
+  const nyYear = d => d.getMonth() >= 6 ? d.getFullYear() + 1 : d.getFullYear();
 
   const HOLIDAYS = [
     { id: "newyear", name: "New Year", color: "#d4a017",
-      greet: d => `Happy New Year ${nyYear(d)}`,
-      note: d => `Happy New Year! Thanks for stopping by. Here's to building lighter, faster things together in ${nyYear(d)}.`,
+      greet: d => `Happy New Year ${nyYear(d)}`, short: () => "Happy New Year",
+      notes: [
+        d => `Happy New Year! Thanks for stopping by. Here's to building lighter, faster things together in ${nyYear(d)}.`,
+        d => `New year, fresh start. May ${nyYear(d)} bring you clean code, fast machines and fewer bugs.`,
+        d => `Happy New Year! Wishing you a ${nyYear(d)} full of good ideas and the courage to ship them.`
+      ],
       test: d => (d.getMonth() === 11 && d.getDate() === 31) || (d.getMonth() === 0 && d.getDate() <= 3) },
     { id: "christmas", name: "Christmas", color: "#c0392b",
       greet: () => "Merry Christmas",
-      note: () => "Merry Christmas from Abuja! Wishing you a peaceful season and a fast, clutter-free PC.",
+      notes: [
+        () => "Merry Christmas from Abuja! Wishing you a peaceful season and a fast, clutter-free PC.",
+        () => "Merry Christmas! I hope your holidays are full of rest, good food and zero error messages.",
+        () => "Season's greetings! Thank you for visiting, and Merry Christmas to you and your loved ones."
+      ],
       test: d => d.getMonth() === 11 && d.getDate() >= 18 && d.getDate() <= 30 },
     { id: "eidfitr", name: "Eid al-Fitr", color: "#b8912c",
       greet: () => "Eid Mubarak",
-      note: () => "Eid Mubarak! Wishing you and your family peace, joy and blessings this Eid al-Fitr.",
+      notes: [
+        () => "Eid Mubarak! Wishing you and your family peace, joy and blessings this Eid al-Fitr.",
+        () => "Eid Mubarak! May this Eid bring you happiness, good health and time with the people you love.",
+        () => "Eid al-Fitr Mubarak from Abuja! Wishing you a joyful celebration after a blessed Ramadan."
+      ],
       test: d => { const h = hijri(d); return !!h && h.m === 10 && h.d <= 3; } },
     { id: "eidadha", name: "Eid al-Adha", color: "#b8912c",
       greet: () => "Eid Mubarak",
-      note: () => "Eid Mubarak! Wishing you and your loved ones a blessed Eid al-Adha.",
+      notes: [
+        () => "Eid Mubarak! Wishing you and your loved ones a blessed Eid al-Adha.",
+        () => "Eid Mubarak! May this Eid al-Adha fill your home with peace, gratitude and togetherness.",
+        () => "Barka da Sallah! Wishing you a blessed and joyful Eid al-Adha."
+      ],
       test: d => { const h = hijri(d); return !!h && h.m === 12 && h.d >= 10 && h.d <= 13; } },
     { id: "easter", name: "Easter", color: "#c06c96",
       greet: () => "Happy Easter",
-      note: () => "Happy Easter! Wishing you a joyful and restful holiday.",
+      notes: [
+        () => "Happy Easter! Wishing you a joyful and restful holiday.",
+        () => "Happy Easter! Wishing you a season of renewal, hope and fresh starts.",
+        () => "Happy Easter from Abuja! I hope you get a long weekend of rest and good company."
+      ],
       test: d => { const diff = dayDiff(d, easterSunday(d.getFullYear())); return diff >= -2 && diff <= 1; } },
     { id: "independence", name: "Nigeria Independence Day", color: "#118a3e",
-      greet: () => "Happy Independence Day, Nigeria",
-      note: () => "Happy Independence Day, Nigeria! Proud to be building from Abuja.",
+      greet: () => "Happy Independence Day, Nigeria", short: () => "Independence Day",
+      notes: [
+        () => "Happy Independence Day, Nigeria! Proud to be building from Abuja.",
+        () => "Happy Independence Day! Here's to Nigerian talent building for the world.",
+        () => "Happy Independence Day, Nigeria! Green, white, green, and proudly building."
+      ],
       test: d => d.getMonth() === 9 && d.getDate() <= 2 },
     { id: "valentine", name: "Valentine's Day", color: "#d6336c",
-      greet: () => "Happy Valentine's Day",
-      note: () => "Happy Valentine's Day! Sending a little love to everyone who builds, tests and ships.",
+      greet: () => "Happy Valentine's Day", short: () => "Happy Valentine's",
+      notes: [
+        () => "Happy Valentine's Day! Sending a little love to everyone who builds, tests and ships.",
+        () => "Happy Valentine's Day! Here's to loving what you build.",
+        () => "Happy Valentine's Day! May your code compile on the first try and your heart stay full."
+      ],
       test: d => d.getMonth() === 1 && d.getDate() >= 12 && d.getDate() <= 15 },
     { id: "halloween", name: "Halloween", color: "#e8590c",
       greet: () => "Happy Halloween",
-      note: () => "Happy Halloween! The scariest thing on this page is a laptop with 142 background processes.",
+      notes: [
+        () => "Happy Halloween! The scariest thing on this page is a laptop with 142 background processes.",
+        () => "Happy Halloween! Nothing here is haunted, though I can't speak for your startup folder.",
+        () => "Happy Halloween! Bats are welcome here. Bugs are not."
+      ],
       test: d => d.getMonth() === 9 && d.getDate() >= 25 }
   ];
   const activeOn = d => HOLIDAYS.find(h => h.test(d)) || null;
@@ -1075,10 +1146,18 @@ const SKILL_INFO = {
   const holiday = (forced && HOLIDAYS.find(h => h.id === forced)) || activeOn(today);
   const storeKey = h => `anm-season-${h.id}-${today.getFullYear()}`;
   const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+  let message = "";
+  if (holiday) {
+    const n = holiday.notes.length, lastSeen = +store.get(`anm-season-${holiday.id}-msg`);
+    let i = Math.floor(Math.random() * n);
+    if (n > 1 && i === lastSeen) i = (i + 1 + Math.floor(Math.random() * (n - 1))) % n;
+    store.set(`anm-season-${holiday.id}-msg`, String(i));
+    message = holiday.notes[i](today);
+  }
 
   // Terminal command, available all year
   COMMANDS.holiday = () => {
-    if (holiday) return `${esc(holiday.name)}: ${esc(holiday.note(today))}`;
+    if (holiday) return `${esc(holiday.name)}: ${esc(message)}`;
     const up = HOLIDAYS.map(h => ({ h, d: nextStart(h, today) })).filter(x => x.d).sort((a, b) => a.d - b.d)[0];
     return up ? `No holiday today. Next up: ${esc(up.h.name)} on ${fmt(up.d)}.` : "No holiday today.";
   };
@@ -1086,7 +1165,6 @@ const SKILL_INFO = {
 
   if (!holiday) return;
   const hiddenDecor = !forced && store.get(storeKey(holiday) + "-decor") === "off";
-  const hiddenNote = !forced && store.get(storeKey(holiday) + "-note") === "off";
 
   // The little message: greeting badge, note card and a line in the terminal
   const nav = document.querySelector(".nav");
@@ -1095,12 +1173,16 @@ const SKILL_INFO = {
   const note = $("#seasonNote");
   note.style.setProperty("--season", holiday.color);
   $("#seasonGreetText").textContent = holiday.greet(today);
-  $("#seasonNoteText").textContent = holiday.note(today);
+  $("#seasonGreetShort").textContent = (holiday.short || holiday.greet)(today);
+  $("#seasonNoteText").textContent = message;
   $("#seasonGreet").classList.add("on");
-  print(`<span class="acc">note</span>  ${esc(holiday.note(today))} <span class="dim">— Anthony</span>`);
+  print(`<span class="acc">note</span>  ${esc(message)} <span class="dim">— Anthony</span>`);
   print("&nbsp;");
-  if (!hiddenNote) setTimeout(() => note.classList.add("on"), 900);
-  $("#seasonNoteClose").addEventListener("click", () => { note.classList.remove("on"); store.set(storeKey(holiday) + "-note", "off"); });
+  // Leave room at the bottom of the page while the note is open, so it never covers the footer
+  const makeRoom = () => { document.body.style.paddingBottom = note.classList.contains("on") ? (note.offsetHeight + 28) + "px" : ""; };
+  setTimeout(() => { note.classList.add("on"); makeRoom(); }, 900);
+  window.addEventListener("resize", makeRoom);
+  $("#seasonNoteClose").addEventListener("click", () => { note.classList.remove("on"); makeRoom(); });
 
   // Decorations
   const canvas = $("#seasonCanvas"), ctx = canvas.getContext("2d");
@@ -1159,58 +1241,76 @@ const SKILL_INFO = {
     if (id === "eidfitr" || id === "eidadha") for (let i = 0; i < 18; i++) parts.push({ k: "spark", x: rand(0, W), y: rand(top + 6, H * 0.9), r: rand(2.5, 5), ph: rand(0, 6.28), c: "#e8c35a" });
     if (id === "halloween") for (let i = 0; i < 5; i++) parts.push({ k: "bat", x: rand(-W, W), y: rand(top + 30, H * 0.7), s: rand(12, 20), vx: rand(0.6, 1.2), ph: rand(0, 6.28), bob: rand(0, 6.28) });
   }
-  let confettiDone = false;
+  // Motion is time-based so it runs at the same speed on 60 Hz, 120 Hz and 144 Hz screens.
+  // Visitors with "reduce motion" switched on (common on Windows PCs with animation effects off)
+  // still see the decorations move, just slower and calmer; the × on the greeting stops them completely.
+  const PACE = reduce ? 0.45 : 1;
+  let confettiDone = false, last = 0, clock = 0;
   function draw(now) {
-    const t = (now - t0) / 1000, still = reduce;
+    const dt = last ? Math.min(3, (now - last) / 16.667) : 1;   // 1 = one 60 Hz frame
+    last = now;
+    const sp = dt * PACE;
+    clock += (dt / 60) * PACE;
+    const t = clock;
     ctx.clearRect(0, 0, W, H);
     const top = navH(), snowC = cssVar("--snow"), inkC = cssVar("--ink"), mutedC = cssVar("--muted");
     let fallingConfetti = 0;
     for (const p of parts) {
       if (p.k === "snow") {
-        if (!still) { p.y += p.vy; p.x += Math.sin(t + p.sway) * 0.3; if (p.y > H + 4) { p.y = -4; p.x = rand(0, W); } }
+        p.y += p.vy * sp; p.x += Math.sin(t + p.sway) * 0.3 * sp;
+        if (p.y > H + 4) { p.y = -4; p.x = rand(0, W); }
         ctx.globalAlpha = 0.8; ctx.fillStyle = snowC; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.28); ctx.fill();
       } else if (p.k === "heart") {
-        if (!still) { p.y -= p.vy; p.x += Math.sin(t * 0.8 + p.sway) * 0.35; if (p.y < -20) { p.y = H + 10; p.x = rand(0, W); } }
+        p.y -= p.vy * sp; p.x += Math.sin(t * 0.8 + p.sway) * 0.35 * sp;
+        if (p.y < -20) { p.y = H + 10; p.x = rand(0, W); }
         ctx.globalAlpha = 0.45; ctx.fillStyle = p.c; heart(p.x, p.y, p.s);
       } else if (p.k === "conf") {
-        // one celebratory shower on page load, then it clears away
-        if (!still) { p.y += p.vy; p.rot += p.vr; p.x += Math.sin(t * 2 + p.sway) * 0.6; }
-        else if (p.y < 0) { p.y = rand(top, H); }
+        // one celebratory shower when the page opens, then it clears away
+        p.y += p.vy * sp; p.rot += p.vr * sp; p.x += Math.sin(t * 2 + p.sway) * 0.6 * sp;
         if (p.y < H + 20) fallingConfetti++;
         ctx.globalAlpha = 0.9; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.fillStyle = p.c;
         ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); ctx.strokeStyle = "rgba(0,0,0,0.15)"; ctx.lineWidth = 0.5; ctx.strokeRect(-p.w / 2, -p.h / 2, p.w, p.h); ctx.restore();
       } else if (p.k === "spark") {
-        ctx.globalAlpha = still ? 0.7 : 0.3 + 0.5 * (0.5 + 0.5 * Math.sin(t * 2.2 + p.ph)); ctx.fillStyle = p.c; star(p.x, p.y, p.r);
+        ctx.globalAlpha = 0.3 + 0.5 * (0.5 + 0.5 * Math.sin(t * 2.2 + p.ph)); ctx.fillStyle = p.c; star(p.x, p.y, p.r);
       } else if (p.k === "petal") {
-        if (!still) { p.y += p.vy; p.rot += 0.01; p.x += Math.sin(t + p.sway) * 0.4; if (p.y > H + 6) { p.y = -6; p.x = rand(0, W); } }
+        p.y += p.vy * sp; p.rot += 0.01 * sp; p.x += Math.sin(t + p.sway) * 0.4 * sp;
+        if (p.y > H + 6) { p.y = -6; p.x = rand(0, W); }
         ctx.globalAlpha = 0.75; ctx.fillStyle = p.c; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.beginPath(); ctx.ellipse(0, 0, p.r, p.r * 0.6, 0, 0, 6.28); ctx.fill(); ctx.restore();
       } else if (p.k === "bat") {
-        if (!still) { p.x += p.vx; if (p.x > W + 40) { p.x = -40; p.y = rand(top + 30, H * 0.7); } }
-        ctx.globalAlpha = 0.7; ctx.fillStyle = inkC; bat(p.x, p.y + Math.sin(t * 2 + p.bob) * 6, p.s, still ? 1 : t * 9 + p.ph);
+        p.x += p.vx * sp;
+        if (p.x > W + 40) { p.x = -40; p.y = rand(top + 30, H * 0.7); }
+        ctx.globalAlpha = 0.7; ctx.fillStyle = inkC; bat(p.x, p.y + Math.sin(t * 2 + p.bob) * 6, p.s, t * 9 + p.ph);
       } else if (p.k === "bulb") {
         const sag = 8, y = top + 2 + (p.i % 2) * sag, x = (p.i / p.n) * W;
         if (p.i < p.n) {
           const x2 = ((p.i + 1) / p.n) * W, y2 = top + 2 + ((p.i + 1) % 2) * sag;
           ctx.globalAlpha = 0.55; ctx.strokeStyle = mutedC; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x, y); ctx.quadraticCurveTo((x + x2) / 2, Math.max(y, y2) + 6, x2, y2); ctx.stroke();
         }
-        ctx.globalAlpha = still ? 1 : 0.55 + 0.45 * (0.5 + 0.5 * Math.sin(t * 3 + p.ph)); ctx.fillStyle = p.c;
+        ctx.globalAlpha = 0.55 + 0.45 * (0.5 + 0.5 * Math.sin(t * 3 + p.ph)); ctx.fillStyle = p.c;
         ctx.beginPath(); ctx.ellipse(x, y + 7, 3.4, 5, 0, 0, 6.28); ctx.fill();
         ctx.globalAlpha = 0.5; ctx.fillStyle = mutedC; ctx.fillRect(x - 2, y, 4, 3);
       }
     }
     ctx.globalAlpha = 1;
-    // New Year / Independence: stop the loop once the confetti has fallen away (sparkles keep twinkling on New Year)
-    if ((holiday.id === "independence") && !still && fallingConfetti === 0) { confettiDone = true; ctx.clearRect(0, 0, W, H); running = false; return; }
-    if (!still) raf = requestAnimationFrame(draw); else running = false;
+    // Independence Day: stop once the confetti has fallen away (the ribbon stays). New Year keeps its sparkles twinkling.
+    if (holiday.id === "independence" && fallingConfetti === 0) { confettiDone = true; ctx.clearRect(0, 0, W, H); running = false; return; }
+    raf = requestAnimationFrame(draw);
   }
-  function start() { if (running) return; running = true; raf = requestAnimationFrame(draw); }
+  function start() { if (running) return; running = true; last = 0; raf = requestAnimationFrame(draw); }
   function stop() { cancelAnimationFrame(raf); running = false; ctx.clearRect(0, 0, W, H); }
   const ORN = { independence: ["seasonRibbon"], halloween: ["seasonCobweb"], eidfitr: ["seasonMoon"], eidadha: ["seasonMoon"], easter: ["seasonEggs"] };
   function showDecor(on) {
     (ORN[holiday.id] || []).forEach(id => $("#" + id).classList.toggle("on", on));
-    if (on) { resize(); setup(); start(); } else stop();
+    if (on) { resize(); setup(); confettiDone = false; start(); } else stop();
   }
-  window.addEventListener("resize", () => { if (!canvas.dataset.off) { resize(); setup(); if (reduce || confettiDone) { running = false; start(); } } });
+  // On phones the address bar showing or hiding fires "resize" while scrolling. Only re-scatter the
+  // particles when the width really changes, so snow, bats and confetti don't jump or replay mid-scroll.
+  let lastW = window.innerWidth;
+  window.addEventListener("resize", () => {
+    if (canvas.dataset.off) return;
+    resize();
+    if (Math.abs(window.innerWidth - lastW) > 60) { lastW = window.innerWidth; if (!confettiDone) setup(); }
+  });
   $("#seasonHide").addEventListener("click", () => {
     const off = !canvas.dataset.off;
     canvas.dataset.off = off ? "1" : "";
